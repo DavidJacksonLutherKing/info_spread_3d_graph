@@ -5,12 +5,29 @@ $("#generate").click(function () {
     nodeLink.links = [];
     for (var i = 0; i < 63; i++) {   
         var node = {};
-        node.nickName = eval("NickNameUtil.getRandomName(4)");
-        node.openId =eval("NickNameUtil.getStringRandom(30)");
-        node.children = [];       
+        node.id =eval("NickNameUtil.getStringRandom(30)");
+        node.nickName = eval("NickNameUtil.getRandomName(4)");              
         nodeLink.nodes.push(node);
     }
-
+    var nodes = nodeLink.nodes;
+    for (key in nodes){
+        nodes[key].id;
+        var randomTargetKey = Math.floor(Math.random()*nodes.length);
+        link = {}
+        link.source = nodes[key].id
+        link.target = nodes[randomTargetKey].id;
+        link.value = Math.ceil(Math.random()*20);
+        nodeLink.links.push(link);
+    }
+    for (key in nodes){
+        nodes[key].id;
+        var randomTargetKey = Math.floor(Math.random()*nodes.length);
+        link = {}
+        link.source = nodes[key].id
+        link.target = nodes[randomTargetKey].id;
+        link.value = Math.ceil(Math.random()*20);
+        nodeLink.links.push(link);
+    }
     $("#result").val(JSON.stringify(nodeLink));
     console.log(nodeLink);
 });

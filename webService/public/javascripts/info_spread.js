@@ -29,11 +29,38 @@ chart = function(data) {
         .selectAll("circle")
         .data(nodes)
         .join("circle")
-        .attr("fill", d => d.children ? null : "#000")
+        .each(function(nodeList,index){    
+            this.setAttribute("fill","url(#"+nodes[index].data.name+")");
+        })
         .attr("stroke", d => d.children ? null : "#fff")
-        .attr("r", 20)
-        .call(drag(simulation));
-
+        .attr("r", 20)        
+        .call(drag(simulation))
+        .on("mousedown",function(){
+            
+            var t = d3.transition().duration(500).ease(d3.easeBounceIn);
+            d3.select(this).interrupt();
+            if(d3.select(this).attr("r")==20){      
+                d3.selectAll("circle").transition(t).attr("r",20);              
+                d3.select(this).transition(t).attr("r",30);                
+            }else{                           
+                d3.select(this).transition(t).attr("r",20);
+            } 
+        });
+        
+    const pattern =svg.append("defs")        
+        .selectAll("pattern")
+        .data(nodes)
+        .join("pattern")
+        .each(function(nodeList,index){
+            this.setAttribute("id",nodes[index].data.name)
+            this.setAttribute("width","100%");
+            this.setAttribute("height","100%");
+            this.setAttribute("patternContentUnits","objectBoundingBox")
+        })
+        .append("image")         
+        .attr("xlink:href","http://userimg.yingyonghui.com/head/24/1458708838143/5426424.png-thumb")
+        .attr("width",1)
+        .attr("height",1);
     node.append("title")
     .text(d => d.data.name);
 

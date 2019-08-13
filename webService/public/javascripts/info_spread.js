@@ -1,38 +1,41 @@
-const height = 600;
-const width = 1000;
-chart = function(data){
-    const links = data.links.map(d => Object.create(d));
-    const nodes = data.nodes.map(d => Object.create(d));
- 
+const height = window.innerHeight;
+const width = window.innerWidth;
+
+chart = function(data) {
+    const root = d3.hierarchy(data);
+    const links = root.links();
+    const nodes = root.descendants();
 
     const simulation = d3.forceSimulation(nodes)
-        .force("link", d3.forceLink(links).id(d => d.id))
-        .force("charge", d3.forceManyBody())
-        .force("center", d3.forceCenter(width / 2, height / 2));
+        .force("link", d3.forceLink(links).id(d => d.id).distance(200).strength(1))
+        .force("charge", d3.forceManyBody().strength(-50))
+        .force("x", d3.forceX())
+        .force("y", d3.forceY());
 
     const svg = d3.create("svg")
-        .attr("viewBox", [0, 0, width, height]);
+        .attr("viewBox", [-width / 2, -height / 2, width, height]);
 
     const link = svg.append("g")
         .attr("stroke", "#999")
         .attr("stroke-opacity", 0.6)
         .selectAll("line")
-        .data(links)
-        .join("line")
-        .attr("stroke-width", d => Math.sqrt(d.value));
+        .data(links)        
+        .join("line");
 
     const node = svg.append("g")
-        .attr("stroke", "#fff")
+        .attr("fill", "#fff")
+        .attr("stroke", "#000")
         .attr("stroke-width", 1.5)
         .selectAll("circle")
         .data(nodes)
         .join("circle")
-        .attr("r", 5)
-        .attr("fill", color)
+        .attr("fill", d => d.children ? null : "#000")
+        .attr("stroke", d => d.children ? null : "#fff")
+        .attr("r", 20)
         .call(drag(simulation));
 
     node.append("title")
-        .text(d => d.id);
+    .text(d => d.data.name);
 
     simulation.on("tick", () => {
         link
@@ -45,18 +48,15 @@ chart = function(data){
             .attr("cx", d => d.x)
             .attr("cy", d => d.y);
     });
-
-    // invalidation.then(() => simulation.stop());
-
     return svg.node();
 }
-
 const color = function () {
     const scale = d3.scaleOrdinal(d3.schemeCategory10);
     return d => scale(d.group);
 }
 
-const drag = function (simulation) {
+const drag = simulation => {
+
     function dragstarted(d) {
         if (!d3.event.active) simulation.alphaTarget(0.3).restart();
         d.fx = d.x;
@@ -80,7 +80,7 @@ const drag = function (simulation) {
         .on("end", dragended);
 }
 
-d3.json("https://gist.githubusercontent.com/mbostock/4062045/raw/5916d145c8c048a6e3086915a6be464467391c62/miserables.json").then(function(data){
+d3.json("data/flare.json").then(function (data) {
     var a = chart(data);
     console.log(a);
     $("body>div").append(a);

@@ -1,6 +1,9 @@
-chart = data => {
+const height = 600;
+const width = 1000;
+chart = function(data){
     const links = data.links.map(d => Object.create(d));
     const nodes = data.nodes.map(d => Object.create(d));
+ 
 
     const simulation = d3.forceSimulation(nodes)
         .force("link", d3.forceLink(links).id(d => d.id))
@@ -43,21 +46,17 @@ chart = data => {
             .attr("cy", d => d.y);
     });
 
-    invalidation.then(() => simulation.stop());
+    // invalidation.then(() => simulation.stop());
 
     return svg.node();
 }
-data = d3.json("https://gist.githubusercontent.com/mbostock/4062045/raw/5916d145c8c048a6e3086915a6be464467391c62/miserables.json", function (data) {
-    chart(data);
-});
-height = 600;
-width = 1000;
-color = function () {
+
+const color = function () {
     const scale = d3.scaleOrdinal(d3.schemeCategory10);
     return d => scale(d.group);
 }
 
-drag = simulation => {
+const drag = function (simulation) {
     function dragstarted(d) {
         if (!d3.event.active) simulation.alphaTarget(0.3).restart();
         d.fx = d.x;
@@ -80,3 +79,9 @@ drag = simulation => {
         .on("drag", dragged)
         .on("end", dragended);
 }
+
+d3.json("https://gist.githubusercontent.com/mbostock/4062045/raw/5916d145c8c048a6e3086915a6be464467391c62/miserables.json").then(function(data){
+    var a = chart(data);
+    console.log(a);
+    $("body>div").append(a);
+});

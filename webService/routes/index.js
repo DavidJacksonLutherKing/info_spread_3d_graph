@@ -7,7 +7,7 @@ router.get('/', function(req, res, next) {
 });
 /* GET Open Id 生成器. */
 router.get('/open_id_generator', function(req, res, next) {
-  res.render('index', { title: 'Open ID Generator' });
+  res.render('open_id_generator', { title: 'Open ID Generator' });
 });
 
 module.exports = router;

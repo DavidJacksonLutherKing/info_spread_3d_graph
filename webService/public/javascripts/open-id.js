@@ -2,6 +2,8 @@ $("#generate").click(function () {
     var tree = {};
     var nodeLink = {};
     var num = $("input[name=number]").val() || 0;
+    var fixed_weight_checked = $("input[name=fixed]").prop("checked");
+    var fixed_weight = $("input[name=fixed-weight]").val();
     nodeLink.nodes = [];
     nodeLink.links = [];
     for (var i = 0; i < num; i++) {
@@ -17,7 +19,7 @@ $("#generate").click(function () {
         link = {}
         link.source = nodes[key].id
         link.target = nodes[randomTargetKey].id;
-        link.value = Math.ceil(Math.random() * 20);
+        link.value = fixed_weight_checked ? fixed_weight : Math.ceil(Math.random() * 20);
         nodeLink.links.push(link);
     }
     for (key in nodes) {
@@ -26,7 +28,7 @@ $("#generate").click(function () {
         link = {}
         link.source = nodes[key].id
         link.target = nodes[randomTargetKey].id;
-        link.value = Math.ceil(Math.random() * 20);
+        link.value = fixed_weight_checked ? fixed_weight : Math.ceil(Math.random() * 20);
         nodeLink.links.push(link);
     }
     $("#result").val(JSON.stringify(nodeLink));

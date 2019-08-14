@@ -1,4 +1,4 @@
-const height = window.innerHeight;
+const height = window.innerHeight*0.7;
 const width = window.innerWidth;
 
 chart = function (data) {
@@ -9,7 +9,7 @@ chart = function (data) {
         .force("link", d3.forceLink(links).id(d => d.id).distance(100))
         .force("charge", d3.forceManyBody())
         .force("center", d3.forceCenter(width / 2, height / 2))
-        .force("collision", d3.forceCollide().radius(30));
+        .force("collision", d3.forceCollide().radius(27));
 
     const svg = d3.create("svg")
         .attr("viewBox", [0, 0, width, height]);

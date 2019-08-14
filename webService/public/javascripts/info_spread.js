@@ -1,14 +1,15 @@
 const height = window.innerHeight;
 const width = window.innerWidth;
 
-chart = function(data) {
+chart = function (data) {
     const links = data.links.map(d => Object.create(d));
     const nodes = data.nodes.map(d => Object.create(d));
 
     const simulation = d3.forceSimulation(nodes)
-        .force("link", d3.forceLink(links).id(d => d.id).distance(300))
+        .force("link", d3.forceLink(links).id(d => d.id).distance(100))
         .force("charge", d3.forceManyBody())
-        .force("center", d3.forceCenter(width / 2, height / 2));
+        .force("center", d3.forceCenter(width / 2, height / 2))
+        .force("collision", d3.forceCollide().radius(30));
 
     const svg = d3.create("svg")
         .attr("viewBox", [0, 0, width, height]);
@@ -16,9 +17,9 @@ chart = function(data) {
     const link = svg.append("g")
         .attr("stroke", "#999")
         .attr("stroke-opacity", 0.6)
-      .selectAll("line")
-      .data(links)
-      .join("line")
+        .selectAll("line")
+        .data(links)
+        .join("line")
         .attr("stroke-width", d => Math.sqrt(d.value));
 
     const node = svg.append("g")
@@ -27,38 +28,39 @@ chart = function(data) {
         .selectAll("circle")
         .data(nodes)
         .join("circle")
-        .each(function(nodeList,index){
-            this.setAttribute("fill","url(#"+nodes[index].data.name+")");
-        })
-        .attr("stroke", d => d.children ? null : "#fff")
-        .attr("r", 20)
-        .call(drag(simulation))
-        .on("mousedown",function(){
-
+        .attr("r",15)
+        .on("mousedown", function () {
             var t = d3.transition().duration(500).ease(d3.easeBounceIn);
             d3.select(this).interrupt();
-            if(d3.select(this).attr("r")==20){
-                d3.selectAll("circle").transition(t).attr("r",20);
-                d3.select(this).transition(t).attr("r",30);
-            }else{
-                d3.select(this).transition(t).attr("r",20);
+            if (d3.select(this).attr("r") == 15) {
+                d3.selectAll("circle").transition(t).attr("r", 15);
+                d3.select(this).transition(t).attr("r", 30);
+            } else {
+                d3.select(this).transition(t).attr("r", 15);
             }
-        });
+        })
+        .select(function () {
+            this.setAttribute("fill", "url(#" + data.nodes[$(this).index()].id + ")");
+            return this;
+        })
+        .call(drag(simulation))
 
-    const pattern =svg.append("defs")
+
+    const pattern = svg.append("defs")
         .selectAll("pattern")
         .data(nodes)
         .join("pattern")
-        .each(function(nodeList,index){
-            this.setAttribute("id",nodes[index].data.name)
-            this.setAttribute("width","100%");
-            this.setAttribute("height","100%");
-            this.setAttribute("patternContentUnits","objectBoundingBox")
-        })
-        .append("image")
-        .attr("xlink:href","http://userimg.yingyonghui.com/head/24/1458708838143/5426424.png-thumb")
-        .attr("width",1)
-        .attr("height",1);
+        .select(function () {
+            this.setAttribute("id", data.nodes[$(this).index()].id)
+            this.setAttribute("width", "100%");
+            this.setAttribute("height", "100%");
+            this.setAttribute("patternContentUnits", "objectBoundingBox")
+            var image = document.createElement("image")
+            image.setAttribute("width", 1)
+            image.setAttribute("height", 1)
+            image.setAttribute("xlink:href", "http://userimg.yingyonghui.com/head/24/1458708838143/5426424.png-thumb");
+            this.innerHTML = image.outerHTML;
+        });
     node.append("title")
         .text(d => d.nickName);
 
@@ -70,8 +72,8 @@ chart = function(data) {
             .attr("y2", d => d.target.y);
 
         node
-            .attr("cx", d => d.x)
-            .attr("cy", d => d.y);
+            .attr("cx", d =>  Math.max(30, Math.min(width - 30, d.x)))
+            .attr("cy", d =>  Math.max(30, Math.min(height - 30, d.y)));
     });
     return svg.node();
 }

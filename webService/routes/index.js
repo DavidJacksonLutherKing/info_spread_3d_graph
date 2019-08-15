@@ -5,6 +5,10 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Transmission' });
 });
+
+router.get('/demo', function(req, res, next) {
+  res.render('demo', { title: 'Demo' });
+});
 /* GET Open Id 生成器. */
 router.get('/open_id_generator', function(req, res, next) {
   res.render('open_id_generator', { title: 'Open ID Generator' });

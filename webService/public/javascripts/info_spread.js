@@ -4,7 +4,7 @@ const width = window.innerWidth;
 chart = function (data) {
     const links = data.links.map(d => Object.create(d));
     const nodes = data.nodes.map(d => Object.create(d));
-
+    console.log(links);
     const simulation = d3.forceSimulation(nodes)
         .force("link", d3.forceLink(links).id(d => d.id).distance(100))
         .force("charge", d3.forceManyBody())
@@ -14,14 +14,51 @@ chart = function (data) {
     const svg = d3.create("svg")
         .attr("viewBox", [0, 0, width, height]);
 
+    const pattern = svg.append("defs")
+        .selectAll("pattern")
+        .data(nodes)
+        .join("pattern")
+        .select(function () {
+            this.setAttribute("id", data.nodes[$(this).index()].id)
+            this.setAttribute("width", "100%");
+            this.setAttribute("height", "100%");
+            this.setAttribute("patternContentUnits", "objectBoundingBox")
+            var image = document.createElement("image")
+            image.setAttribute("width", 1)
+            image.setAttribute("height", 1)
+            image.setAttribute("xlink:href", "http://userimg.yingyonghui.com/head/24/1458708838143/5426424.png-thumb");
+            this.innerHTML = image.outerHTML;
+        });
+
+    const arrow_path = "M0,-5L10,0L0,5";
+    const arrowMarker = svg.append("defs")
+        .append("marker")  
+        .attr("id","arrow")     
+        .attr("markerUnits", "userSpaceOnUse")
+        .attr("markerWidth", "12")
+        .attr("markerHeight", "12")
+        .attr("viewBox", "0 0 12 12")
+        .attr("refX", "6")
+        .attr("refY", "6")
+        .attr("orient", "auto")
+        .append("path")
+        .attr("d", arrow_path)
+        .attr("fill", "#000");
+
+
     const link = svg.append("g")
         .attr("stroke", "#333")
         .attr("stroke-opacity", 0.6)
-        .selectAll("line")
+        .selectAll("path")
         .data(links)
-        .join("line")
-        .attr("stroke-width", d => Math.sqrt(d.value));
-
+        .enter()
+        .append("path")
+        .attr("stroke-width", d => Math.sqrt(d.value))
+        .attr("marker-end","url(#arrow)")
+        // .select(function () {
+        //     // this.setAttribute("mark-mid", "url(#" + data.links[$(this).index()].source + "-" + data.links[$(this).index()].target + ")");
+        // });
+       
     const node = svg.append("g")
         .attr("stroke", "#fff")
         .attr("stroke-width", 1.5)
@@ -55,21 +92,11 @@ chart = function (data) {
         .text("none")
 
 
-    const pattern = svg.append("defs")
-        .selectAll("pattern")
-        .data(nodes)
-        .join("pattern")
-        .select(function () {
-            this.setAttribute("id", data.nodes[$(this).index()].id)
-            this.setAttribute("width", "100%");
-            this.setAttribute("height", "100%");
-            this.setAttribute("patternContentUnits", "objectBoundingBox")
-            var image = document.createElement("image")
-            image.setAttribute("width", 1)
-            image.setAttribute("height", 1)
-            image.setAttribute("xlink:href", "http://userimg.yingyonghui.com/head/24/1458708838143/5426424.png-thumb");
-            this.innerHTML = image.outerHTML;
-        });
+
+
+
+
+
 
     node.append("title")
         .text(d => d.nickName);
@@ -89,9 +116,10 @@ chart = function (data) {
     return svg.node();
 }
 
-// const showChildrenNode = function () {
+const showChildrenNode = function () {
 
-// }
+}
+
 const color = function () {
     const scale = d3.scaleOrdinal(d3.schemeCategory10);
     return d => scale(d.group);
@@ -184,6 +212,6 @@ const drag = simulation => {
 
 d3.json("data/nodes_routes.json").then(function (data) {
     var a = chart(data);
-    console.log(a);
+    // console.log(a);
     $("body>div").append(a);
 });

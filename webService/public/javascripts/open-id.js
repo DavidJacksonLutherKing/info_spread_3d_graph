@@ -22,15 +22,15 @@ $("#generate").click(function () {
         link.value = fixed_weight_checked ? fixed_weight : Math.ceil(Math.random() * 20);
         nodeLink.links.push(link);
     }
-    for (key in nodes) {
-        nodes[key].id;
-        var randomTargetKey = Math.floor(Math.random() * nodes.length);
-        link = {}
-        link.source = nodes[key].id
-        link.target = nodes[randomTargetKey].id;
-        link.value = fixed_weight_checked ? fixed_weight : Math.ceil(Math.random() * 20);
-        nodeLink.links.push(link);
-    }
+    // for (key in nodes) {
+    //     nodes[key].id;
+    //     var randomTargetKey = Math.floor(Math.random() * nodes.length);
+    //     link = {}
+    //     link.source = nodes[key].id
+    //     link.target = nodes[randomTargetKey].id;
+    //     link.value = fixed_weight_checked ? fixed_weight : Math.ceil(Math.random() * 20);
+    //     nodeLink.links.push(link);
+    // }
     $("#result").val(JSON.stringify(nodeLink));
     console.log(nodeLink);
 });

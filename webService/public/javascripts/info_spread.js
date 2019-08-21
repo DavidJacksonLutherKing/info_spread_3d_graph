@@ -30,35 +30,36 @@ chart = function (data) {
             this.innerHTML = image.outerHTML;
         });
 
-    const arrow_path = "M0,-5L10,0L0,5";
     const arrowMarker = svg.append("defs")
         .append("marker")  
         .attr("id","arrow")     
-        .attr("markerUnits", "userSpaceOnUse")
-        .attr("markerWidth", "12")
-        .attr("markerHeight", "12")
-        .attr("viewBox", "0 0 12 12")
-        .attr("refX", "6")
-        .attr("refY", "6")
+        .attr("markerWidth", "4")
+        .attr("markerHeight", "5")
+        .attr("viewBox", "-0 -5 10 10")
+        .attr("refX", "13")
+        .attr("refY", "0")
         .attr("orient", "auto")
-        .append("path")
-        .attr("d", arrow_path)
-        .attr("fill", "#000");
+        .attr("xoverflow","visible")
+        .append("svg:path")
+        .attr("d", "M 0,-4 L 20 ,0 L 0,4")
+        .attr("fill", "#333")
+        .style("stroke","none");
 
 
     const link = svg.append("g")
-        .attr("stroke", "#333")
-        .attr("stroke-opacity", 0.6)
-        .selectAll("path")
+        .selectAll(".link")
         .data(links)
         .enter()
-        .append("path")
-        .attr("stroke-width", d => Math.sqrt(d.value))
+        .append("line")
+        .attr("class", "link")
         .attr("marker-end","url(#arrow)")
-        // .select(function () {
-        //     // this.setAttribute("mark-mid", "url(#" + data.links[$(this).index()].source + "-" + data.links[$(this).index()].target + ")");
-        // });
-       
+        .attr("stroke", "#333")
+        .attr("stroke-opacity", ".6")
+        .select(function () {
+            this.setAttribute("stroke-width", data.links[$(this).index()].value);
+            return this;
+        })
+
     const node = svg.append("g")
         .attr("stroke", "#fff")
         .attr("stroke-width", 1.5)

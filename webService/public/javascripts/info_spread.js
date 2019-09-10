@@ -1,15 +1,15 @@
 const height = window.innerHeight * 0.7;
 const width = window.innerWidth;
-
-chart = function (data) {
+window.data = null;
+const chart = function (data) {
     const links = data.links.map(d => Object.create(d));
     const nodes = data.nodes.map(d => Object.create(d));
     console.log(links);
     const simulation = d3.forceSimulation(nodes)
-        .force("link", d3.forceLink(links).id(d => d.id).distance(100))
+        .force("link", d3.forceLink(links).id(d => d.id).distance(120))
         .force("charge", d3.forceManyBody())
         .force("center", d3.forceCenter(width / 2, height / 2))
-        .force("collision", d3.forceCollide().radius(27));
+        .force("collision", d3.forceCollide().radius(40));
 
     const svg = d3.create("svg")
         .attr("viewBox", [0, 0, width, height]);
@@ -26,7 +26,7 @@ chart = function (data) {
             var image = document.createElement("image")
             image.setAttribute("width", 1)
             image.setAttribute("height", 1)
-            image.setAttribute("xlink:href", "http://userimg.yingyonghui.com/head/24/1458708838143/5426424.png-thumb");
+            image.setAttribute("xlink:href", data.nodes[$(this).index()].filePath);
             this.innerHTML = image.outerHTML;
         });
 
@@ -41,7 +41,7 @@ chart = function (data) {
         .attr("orient", "auto")
         .attr("xoverflow","visible")
         .append("svg:path")
-        .attr("d", "M 0,-4 L 20 ,0 L 0,4")
+        .attr("d", "M 0,-4 L 10 ,0 L 0,4")
         .attr("fill", "#333")
         .style("stroke","none");
 
@@ -62,7 +62,7 @@ chart = function (data) {
 
     const node = svg.append("g")
         .attr("stroke", "#fff")
-        .attr("stroke-width", 1.5)
+        .attr("stroke-width",3)
         .selectAll("circle")
         .data(nodes)
         .join("circle")
@@ -82,7 +82,7 @@ chart = function (data) {
         .attr("class", "tooltip")
         .attr("id", "tooltip")
         .attr("fill", "#eaeaea");
-
+        
     const tooltip_text = svg.select("g.tooltip-g")
         .append("text")
         .attr("class", "tooltip-text tooltip")
@@ -90,17 +90,14 @@ chart = function (data) {
         .attr("x", 50)
         .attr("y", 50)
         .style("font-size", 20)
-        .text("none")
+        .text("none");
 
-
-
-
-
-
-
-
+    
     node.append("title")
-        .text(d => d.nickName);
+        .selectAll(function(){
+            var info = data.nodes[$(this).parent("circle").index()].nickName+','+data.nodes[$(this).parent("circle").index()].gender+','+data.nodes[$(this).parent("circle").index()].age+"岁";
+            $(this).text(info);
+        });
 
     simulation.on("tick", () => {
         link
@@ -142,6 +139,8 @@ const drag = simulation => {
         d3.selectAll("circle").attr("active", false);
         d3.select(this).attr("active", true);
         d3.select(this).transition(t1).attr("r", 30);
+        var currentNode = $(this).attr("id");
+        showCurrentNode(currentNode,data);
         var radius = 15;
         var cx = parseInt(d3.select(this).attr("cx"));
         var cy = parseInt(d3.select(this).attr("cy"));
@@ -180,15 +179,6 @@ const drag = simulation => {
         if (!d3.event.active) simulation.alphaTarget(0);
         d.fx = null;
         d.fy = null;
-        // var t1 = d3.transition().duration(500).ease(d3.easeBounceIn);
-        // var t2 = d3.transition().duration(700).ease(d3.easeQuadIn);
-        // var t3 = d3.transition().delay(700);
-        // // } else {
-        // d3.select(this).transition(t1).attr("r", 15);
-        // d3.select("#tooltip").transition(t2).style("opacity", "0");
-        // d3.select("#tooltip").transition(t3).style("display", "none");
-        // d3.select("#tooltip-text").transition(t2).style("opacity", "0");
-        // d3.select("#tooltip-text").transition(t3).style("display", "none");
         setTimeout(function () {
             var radius = 15;
             var cx = parseInt(d3.select("circle[active=true]").attr("cx"));
@@ -211,8 +201,25 @@ const drag = simulation => {
         .on("end", dragended);
 }
 
+const showCurrentNode = function(rootID,data){
+    $("circle").css("stroke","#fff");
+    rootID = rootID.replace("-icon","")
+    $("#"+rootID+"-icon").css("stroke","yellow");
+    var links = data.links;
+    for (key in links){
+        if(links[key].source==rootID){
+            $("#"+links[key].target+"-icon").css("stroke","#990");
+        }
+    }
+}
+
 d3.json("data/nodes_routes.json").then(function (data) {
+    window.data = data;
+    data.root= {}
+    data.root.id=data.nodes[0].id;
     var a = chart(data);
     // console.log(a);
-    $("body>div").append(a);
+    $("body>div").append(a);    
+    showCurrentNode(data.root.id,data);
+    $("#"+data.root.id+"-icon").css("stroke-width","8");
 });

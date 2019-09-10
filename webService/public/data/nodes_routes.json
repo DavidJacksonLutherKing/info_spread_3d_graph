@@ -2,100 +2,89 @@
     "nodes": [{
         "id": "2397v807456W9a08rXBb39HIAjR3P7",
         "nickName": "封智刚8b2D",
-        "gender":"男",
-        "age":25,
-        "filePath":"images/9dd623e187848149e4fb4ab71af715f9.jpeg"
+        "gender": "男",
+        "filePath": "images/9dd623e187848149e4fb4ab71af715f9.jpeg"
     }, {
         "id": "X3P3B42UPyHuEkTt1Q85G1h5R74oL9",
         "nickName": "闻人震博O1JH",
-        "gender":"男",
-        "age":25,
-        "filePath":"images/14e024b69abcef564ee6b4eb27feed3a.jpg"      
+        "gender": "男",
+        "filePath": "images/14e024b69abcef564ee6b4eb27feed3a.jpg"
     }, {
         "id": "7n6HD1323qa7666MhV66268wPcZ46a",
         "nickName": "家振华o815",
-        "gender":"男",
-        "age":25,
-        "filePath":"images/2397v807456W9a08rXBb39HIAjR3P7.png"
+        "gender": "男",
+        "filePath": "images/2397v807456W9a08rXBb39HIAjR3P7.png"
     }, {
         "id": "6K0406mp7AI679idc709Nrq0Rms6XD",
         "nickName": "佟昆明786C",
-        "gender":"男",
-        "age":25,
-        "filePath":"images/3520e9676ffa3b4e620f6efcdff8b5b9.jpeg"
+        "gender": "男",
+        "filePath": "images/3520e9676ffa3b4e620f6efcdff8b5b9.jpeg"
     }, {
         "id": "07921C0p83Kf6wy8NXjIC59o326fd6",
         "nickName": "冉昆纬j507",
-        "gender":"男",
-        "age":25,
-        "filePath":"images/6494cdf01da4ebbc840b525eb54ead36.jpg"
+        "gender": "男",
+        "filePath": "images/6494cdf01da4ebbc840b525eb54ead36.jpg"
     }, {
         "id": "63t4mi66GI8k9d752VRSez210s1n5b",
         "nickName": "裴运杰4YSX",
-        "gender":"男",
-        "age":25,
-        "filePath":"images/74800104f3a1ff8d84fb14ce7a8b3af3.jpg"
+        "gender": "男",
+        "filePath": "images/74800104f3a1ff8d84fb14ce7a8b3af3.jpg"
     }, {
         "id": "K5z0470For824OMXYW22Mn25jx11W9",
         "nickName": "谢昆琦0114",
-        "gender":"男",
-        "age":25,
-        "filePath":"images/a71ab9957d43b58563a0fc249ea041dc.jpg"
+        "gender": "男",
+        "filePath": "images/a71ab9957d43b58563a0fc249ea041dc.jpg"
     }, {
         "id": "T1844hO1023N3e3v646fNwaiD07A9P",
         "nickName": "蒋振海S0r8",
-        "gender":"男",
-        "age":25,
-        "filePath":"images/cd3b9e8945a4659d3ce3daab3c3604c1.jpeg"
+        "gender": "男",
+        "filePath": "images/cd3b9e8945a4659d3ce3daab3c3604c1.jpeg"
     }, {
         "id": "2M9L48a1R9cS7h5b0TYbO0j86K3F6V",
         "nickName": "轩辕运鹏113L",
-        "gender":"男",
-        "age":25,
-        "filePath":"images/f30f610f9ddccf85def8deef1c272151.jpeg"
+        "gender": "男",
+        "filePath": "images/f30f610f9ddccf85def8deef1c272151.jpeg"
     }, {
         "id": "02lGYm20y56VE7gj3K9769DeNaRl2Z",
         "nickName": "林昊苍040r",
-        "gender":"男",
-        "age":25,
-        "filePath":"images/7b4c30b440ad99a54849f192abbbd312.jpeg"
+        "gender": "男",
+        "filePath": "images/7b4c30b440ad99a54849f192abbbd312.jpeg"
     }],
     "links": [{
         "source": "2397v807456W9a08rXBb39HIAjR3P7",
         "target": "X3P3B42UPyHuEkTt1Q85G1h5R74oL9",
         "value": "5"
-    },{
+    }, {
         "source": "2397v807456W9a08rXBb39HIAjR3P7",
         "target": "7n6HD1323qa7666MhV66268wPcZ46a",
         "value": "5"
-    },{
+    }, {
         "source": "2397v807456W9a08rXBb39HIAjR3P7",
         "target": "6K0406mp7AI679idc709Nrq0Rms6XD",
         "value": "5"
-    },{
+    }, {
         "source": "2397v807456W9a08rXBb39HIAjR3P7",
         "target": "07921C0p83Kf6wy8NXjIC59o326fd6",
         "value": "5"
-    },{
+    }, {
         "source": "7n6HD1323qa7666MhV66268wPcZ46a",
         "target": "63t4mi66GI8k9d752VRSez210s1n5b",
         "value": "5"
-    },{
+    }, {
         "source": "7n6HD1323qa7666MhV66268wPcZ46a",
         "target": "K5z0470For824OMXYW22Mn25jx11W9",
         "value": "5"
-    },{
+    }, {
         "source": "6K0406mp7AI679idc709Nrq0Rms6XD",
         "target": "T1844hO1023N3e3v646fNwaiD07A9P",
         "value": "5"
-    },{
+    }, {
         "source": "6K0406mp7AI679idc709Nrq0Rms6XD",
         "target": "2M9L48a1R9cS7h5b0TYbO0j86K3F6V",
         "value": "5"
-    },{
+    }, {
         "source": "07921C0p83Kf6wy8NXjIC59o326fd6",
         "target": "02lGYm20y56VE7gj3K9769DeNaRl2Z",
         "value": "5"
-    }
-    ]
+    }]
 }

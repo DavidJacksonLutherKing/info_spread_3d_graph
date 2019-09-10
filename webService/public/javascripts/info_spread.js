@@ -95,7 +95,7 @@ const chart = function (data) {
     
     node.append("title")
         .selectAll(function(){
-            var info = data.nodes[$(this).parent("circle").index()].nickName+','+data.nodes[$(this).parent("circle").index()].gender+','+data.nodes[$(this).parent("circle").index()].age+"岁";
+            var info = data.nodes[$(this).parent("circle").index()].nickName+','+data.nodes[$(this).parent("circle").index()].gender;
             $(this).text(info);
         });
 

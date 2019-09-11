@@ -12,7 +12,19 @@ const chart = function (data) {
         .force("collision", d3.forceCollide().radius(40));
 
     const svg = d3.create("svg")
-        .attr("viewBox", [0, 0, width, height]);
+        .attr("viewBox", [0, 0, width, height])
+        .call(d3.zoom()
+            .scaleExtent([0.4, 2])
+            .extent([
+                [0, 0],
+                [width, height]
+            ])
+            .on("zoom", function () {
+                node.attr("transform", d3.event.transform); 
+                link.attr("transform", d3.event.transform);
+                d3.select(".tooltip-g rect").attr("transform", d3.event.transform);
+                d3.select(".tooltip-g text").attr("transform", d3.event.transform);
+            }));
 
     const pattern = svg.append("defs")
         .selectAll("pattern")
@@ -31,19 +43,19 @@ const chart = function (data) {
         });
 
     const arrowMarker = svg.append("defs")
-        .append("marker")  
-        .attr("id","arrow")     
+        .append("marker")
+        .attr("id", "arrow")
         .attr("markerWidth", "4")
         .attr("markerHeight", "5")
         .attr("viewBox", "-0 -5 10 10")
         .attr("refX", "13")
         .attr("refY", "0")
         .attr("orient", "auto")
-        .attr("xoverflow","visible")
+        .attr("xoverflow", "visible")
         .append("svg:path")
         .attr("d", "M 0,-4 L 10 ,0 L 0,4")
         .attr("fill", "#333")
-        .style("stroke","none");
+        .style("stroke", "none");
 
 
     const link = svg.append("g")
@@ -52,7 +64,7 @@ const chart = function (data) {
         .enter()
         .append("line")
         .attr("class", "link")
-        .attr("marker-end","url(#arrow)")
+        .attr("marker-end", "url(#arrow)")
         .attr("stroke", "#333")
         .attr("stroke-opacity", ".6")
         .select(function () {
@@ -62,7 +74,7 @@ const chart = function (data) {
 
     const node = svg.append("g")
         .attr("stroke", "#fff")
-        .attr("stroke-width",3)
+        .attr("stroke-width", 3)
         .selectAll("circle")
         .data(nodes)
         .join("circle")
@@ -82,7 +94,7 @@ const chart = function (data) {
         .attr("class", "tooltip")
         .attr("id", "tooltip")
         .attr("fill", "#eaeaea");
-        
+
     const tooltip_text = svg.select("g.tooltip-g")
         .append("text")
         .attr("class", "tooltip-text tooltip")
@@ -92,12 +104,15 @@ const chart = function (data) {
         .style("font-size", 20)
         .text("none");
 
-    
+
     node.append("title")
-        .selectAll(function(){
-            var info = data.nodes[$(this).parent("circle").index()].nickName+','+data.nodes[$(this).parent("circle").index()].gender;
+        .selectAll(function () {
+            var info = data.nodes[$(this).parent("circle").index()].nickName + ',' + data.nodes[$(this).parent("circle").index()].gender;
             $(this).text(info);
         });
+
+
+    svg
 
     simulation.on("tick", () => {
         link
@@ -112,10 +127,6 @@ const chart = function (data) {
         d3.dispatch("centerchange");
     });
     return svg.node();
-}
-
-const showChildrenNode = function () {
-
 }
 
 const color = function () {
@@ -140,7 +151,7 @@ const drag = simulation => {
         d3.select(this).attr("active", true);
         d3.select(this).transition(t1).attr("r", 30);
         var currentNode = $(this).attr("id");
-        showCurrentNode(currentNode,data);
+        showCurrentNode(currentNode, data);
         var radius = 15;
         var cx = parseInt(d3.select(this).attr("cx"));
         var cy = parseInt(d3.select(this).attr("cy"));
@@ -201,25 +212,25 @@ const drag = simulation => {
         .on("end", dragended);
 }
 
-const showCurrentNode = function(rootID,data){
-    $("circle").css("stroke","#fff");
-    rootID = rootID.replace("-icon","")
-    $("#"+rootID+"-icon").css("stroke","yellow");
+const showCurrentNode = function (rootID, data) {
+    $("circle").css("stroke", "#fff");
+    rootID = rootID.replace("-icon", "")
+    $("#" + rootID + "-icon").css("stroke", "yellow");
     var links = data.links;
-    for (key in links){
-        if(links[key].source==rootID){
-            $("#"+links[key].target+"-icon").css("stroke","#990");
+    for (key in links) {
+        if (links[key].source == rootID) {
+            $("#" + links[key].target + "-icon").css("stroke", "#990");
         }
     }
 }
 
 d3.json("data/nodes_routes.json").then(function (data) {
     window.data = data;
-    data.root= {}
-    data.root.id=data.nodes[0].id;
+    data.root = {}
+    data.root.id = data.nodes[0].id;
     var a = chart(data);
     // console.log(a);
-    $("body>div").append(a);    
-    showCurrentNode(data.root.id,data);
-    $("#"+data.root.id+"-icon").css("stroke-width","8");
+    $("body>div").append(a);
+    showCurrentNode(data.root.id, data);
+    $("#" + data.root.id + "-icon").css("stroke-width", "8");
 });

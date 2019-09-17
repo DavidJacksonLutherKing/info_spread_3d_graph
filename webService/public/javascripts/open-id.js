@@ -9,7 +9,9 @@ $("#generate").click(function () {
     for (var i = 0; i < num; i++) {
         var node = {};
         node.id = NickNameUtil.getStringRandom(30);
-        node.nickName = NickNameUtil.getRandomName(4);
+        node.nickName = NickNameUtil.getRandomName(4);                
+        node.gender=Math.round(Math.random())==1?'男':'女';
+        node.filePath="";
         nodeLink.nodes.push(node);
     }
     var nodes = nodeLink.nodes;
@@ -27,19 +29,19 @@ $("#generate").click(function () {
             nodeLink.links.push(link);
         }
     }
-    // for (key in nodes) {
-    //     var randomTargetKey = Math.floor(Math.random() * nodes.length);
-    //     link = {}
-    //     link.source = nodes[key].id;
-    //     if(nodes[randomTargetKey].id==link.source){
-    //         i++;
-    //         continue;
-    //     }else{
-    //         link.target = nodes[randomTargetKey].id;
-    //         link.value = fixed_weight_checked ? fixed_weight : Math.ceil(Math.random() * 20);
-    //         nodeLink.links.push(link);
-    //     }
-    // }
+    for (key in nodes) {
+        var randomTargetKey = Math.floor(Math.random() * nodes.length);
+        link = {}
+        link.source = nodes[key].id;
+        if(nodes[randomTargetKey].id==link.source){
+            i++;
+            continue;
+        }else{
+            link.target = nodes[randomTargetKey].id;
+            link.value = fixed_weight_checked ? fixed_weight : Math.ceil(Math.random() * 20);
+            nodeLink.links.push(link);
+        }
+    }
     // for (key in nodes) {
     //     var randomTargetKey = Math.floor(Math.random() * nodes.length);
     //     link = {}

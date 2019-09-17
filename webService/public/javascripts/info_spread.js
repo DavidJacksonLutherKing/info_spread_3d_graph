@@ -1,24 +1,25 @@
-const height = window.innerHeight * 0.7;
+const height = window.innerHeight ;
 const width = window.innerWidth;
+const radius =3;
 window.data = null;
 const chart = function (data) {
     const links = data.links.map(d => Object.create(d));
     const nodes = data.nodes.map(d => Object.create(d));
     console.log(links);
     const simulation = d3.forceSimulation(nodes)
-        .force("link", d3.forceLink(links).id(d => d.id).distance(120))
+        .force("link", d3.forceLink(links).id(d => d.id).distance(3))
         .force("charge", d3.forceManyBody())
         .force("center", d3.forceCenter(width / 2, height / 2))
-        .force("collision", d3.forceCollide().radius(40));
+        .force("collision", d3.forceCollide().radius(4))
 
     const svg = d3.create("svg")
         .attr("viewBox", [0, 0, width, height])
         .call(d3.zoom()
-            .scaleExtent([0.4, 2])
-            .extent([
-                [0, 0],
-                [width, height]
-            ])
+            .scaleExtent([1, 5])
+            // .extent([
+            //     [0, 0],
+            //     [width, height]
+            // ])
             .on("zoom", function () {
                 node.attr("transform", d3.event.transform); 
                 link.attr("transform", d3.event.transform);
@@ -74,11 +75,11 @@ const chart = function (data) {
 
     const node = svg.append("g")
         .attr("stroke", "#fff")
-        .attr("stroke-width", 3)
+        .attr("stroke-width", 1)
         .selectAll("circle")
         .data(nodes)
         .join("circle")
-        .attr("r", 15)
+        .attr("r", radius)
         .attr("active", false)
         .select(function () {
             this.setAttribute("fill", "url(#" + data.nodes[$(this).index()].id + ")");
@@ -93,7 +94,8 @@ const chart = function (data) {
         .append("rect")
         .attr("class", "tooltip")
         .attr("id", "tooltip")
-        .attr("fill", "#eaeaea");
+        .attr("fill", "#eaeaea")
+        .attr("height",radius*2.5+"px");
 
     const tooltip_text = svg.select("g.tooltip-g")
         .append("text")
@@ -101,7 +103,7 @@ const chart = function (data) {
         .attr("id", "tooltip-text")
         .attr("x", 50)
         .attr("y", 50)
-        .style("font-size", 20)
+        .style("font-size", radius)
         .text("none");
 
 
@@ -110,9 +112,6 @@ const chart = function (data) {
             var info = data.nodes[$(this).parent("circle").index()].nickName + ',' + data.nodes[$(this).parent("circle").index()].gender;
             $(this).text(info);
         });
-
-
-    svg
 
     simulation.on("tick", () => {
         link
@@ -146,26 +145,25 @@ const drag = simulation => {
         d3.select(this).interrupt();
         d3.selectAll(".tooltip").interrupt();
         // if (d3.select(this).attr("r") == 15) {
-        d3.selectAll("circle").transition(t1).attr("r", 15);
+        d3.selectAll("circle").transition(t1).attr("r", radius);
         d3.selectAll("circle").attr("active", false);
         d3.select(this).attr("active", true);
-        d3.select(this).transition(t1).attr("r", 30);
+        d3.select(this).transition(t1).attr("r", radius*2);
         var currentNode = $(this).attr("id");
         showCurrentNode(currentNode, data);
-        var radius = 15;
         var cx = parseInt(d3.select(this).attr("cx"));
         var cy = parseInt(d3.select(this).attr("cy"));
         var x = cx + 2.5 * radius;
         var y = cy - radius;
         d3.select("#tooltip").attr("x", x);
         d3.select("#tooltip").attr("y", y);
-        d3.select("#tooltip-text").attr("x", x + 10);
+        d3.select("#tooltip-text").attr("x", x + radius);
         d3.select("#tooltip-text").attr("y", y + 1.5 * radius);
         d3.select("#tooltip-text").text(d3.select(this).text());
         d3.selectAll(".tooltip").style("display", "block");
         d3.selectAll(".tooltip").transition(t2).style("opacity", "1");
         var textLength = document.getElementsByClassName("tooltip-text")[0].getComputedTextLength();
-        var textBoxWidth = textLength + 20;
+        var textBoxWidth = textLength+radius*2;
         d3.select(".tooltip").style("width", textBoxWidth + "px");
         d3.select("#tooltip").style("z-index", 1000);
         d3.select("#tooltip-text").style("z-index", 1001);
@@ -174,15 +172,13 @@ const drag = simulation => {
     function dragged(d) {
         d.fx = d3.event.x;
         d.fy = d3.event.y;
-
-        var radius = 15;
         var cx = parseInt(d3.select(this).attr("cx"));
         var cy = parseInt(d3.select(this).attr("cy"));
         var x = cx + 2.5 * radius;
         var y = cy - radius;
         d3.select("#tooltip").attr("x", x);
         d3.select("#tooltip").attr("y", y);
-        d3.select("#tooltip-text").attr("x", x + 10);
+        d3.select("#tooltip-text").attr("x", x + radius);
         d3.select("#tooltip-text").attr("y", y + 1.5 * radius);
     }
 
@@ -191,7 +187,6 @@ const drag = simulation => {
         d.fx = null;
         d.fy = null;
         setTimeout(function () {
-            var radius = 15;
             var cx = parseInt(d3.select("circle[active=true]").attr("cx"));
             var cy = parseInt(d3.select("circle[active=true]").attr("cy"));
             var x = cx + 2.5 * radius;
@@ -201,9 +196,9 @@ const drag = simulation => {
             var t3 = d3.transition().delay(700);
             d3.select("#tooltip").transition(t2).attr("x", x);
             d3.select("#tooltip").transition(t2).attr("y", y);
-            d3.select("#tooltip-text").transition(t2).attr("x", x + 10);
+            d3.select("#tooltip-text").transition(t2).attr("x", x + radius);
             d3.select("#tooltip-text").transition(t2).attr("y", y + 1.5 * radius);
-        }, 1500);
+        }, 10000);
     }
 
     return d3.drag()
@@ -224,7 +219,7 @@ const showCurrentNode = function (rootID, data) {
     }
 }
 
-d3.json("data/nodes_routes.json").then(function (data) {
+d3.json("data/nodes_routes_1.json").then(function (data) {
     window.data = data;
     data.root = {}
     data.root.id = data.nodes[0].id;
@@ -232,5 +227,5 @@ d3.json("data/nodes_routes.json").then(function (data) {
     // console.log(a);
     $("body>div").append(a);
     showCurrentNode(data.root.id, data);
-    $("#" + data.root.id + "-icon").css("stroke-width", "8");
+    // $("#" + data.root.id + "-icon").css("stroke-width", radius*0.4);
 });

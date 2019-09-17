@@ -1,16 +1,16 @@
 const height = window.innerHeight ;
 const width = window.innerWidth;
-const radius =3;
+const radius =10;
 window.data = null;
 const chart = function (data) {
     const links = data.links.map(d => Object.create(d));
     const nodes = data.nodes.map(d => Object.create(d));
     console.log(links);
     const simulation = d3.forceSimulation(nodes)
-        .force("link", d3.forceLink(links).id(d => d.id).distance(3))
+        .force("link", d3.forceLink(links).id(d => d.id).distance(radius*10))
         .force("charge", d3.forceManyBody())
         .force("center", d3.forceCenter(width / 2, height / 2))
-        .force("collision", d3.forceCollide().radius(4))
+        .force("collision", d3.forceCollide().radius(radius*3))
 
     const svg = d3.create("svg")
         .attr("viewBox", [0, 0, width, height])
@@ -27,6 +27,7 @@ const chart = function (data) {
                 d3.select(".tooltip-g text").attr("transform", d3.event.transform);
             }));
 
+    
     const pattern = svg.append("defs")
         .selectAll("pattern")
         .data(nodes)
@@ -56,8 +57,7 @@ const chart = function (data) {
         .append("svg:path")
         .attr("d", "M 0,-4 L 10 ,0 L 0,4")
         .attr("fill", "#333")
-        .style("stroke", "none");
-
+        .style("stroke", "none");     
 
     const link = svg.append("g")
         .selectAll(".link")
@@ -75,7 +75,7 @@ const chart = function (data) {
 
     const node = svg.append("g")
         .attr("stroke", "#fff")
-        .attr("stroke-width", 1)
+        .attr("stroke-width", radius/4)
         .selectAll("circle")
         .data(nodes)
         .join("circle")
@@ -95,7 +95,9 @@ const chart = function (data) {
         .attr("class", "tooltip")
         .attr("id", "tooltip")
         .attr("fill", "#eaeaea")
-        .attr("height",radius*2.5+"px");
+        .attr("height",radius*2.5+"px")
+        .attr("rx","5")
+        .attr("ry","5");
 
     const tooltip_text = svg.select("g.tooltip-g")
         .append("text")
@@ -219,7 +221,7 @@ const showCurrentNode = function (rootID, data) {
     }
 }
 
-d3.json("data/nodes_routes_1.json").then(function (data) {
+d3.json("data/nodes_routes.json").then(function (data) {
     window.data = data;
     data.root = {}
     data.root.id = data.nodes[0].id;

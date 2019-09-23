@@ -3,17 +3,32 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Marvel Characters | Force layout with images</title>
-  <script src="https://d3js.org/d3.v5.min.js" charset="utf-8"></script>
+  <title>
+    <%=title %>
+  </title>
+  <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
   <style>
+    body {
+      margin: 0 auto
+    }
+
     #vis {
-      background-color: #ffffff;
-      margin: 10px 10px;
-      border-radius: 50px;
+
+      /* background-color: #ffffff; */
+      /*2*/
+      background-color: #007ABC;
+
+      padding: 10px 10px;
+      /* border-radius: 50px; */
       overflow: hidden;
-      max-width: 375px;
-      height: 647px;
+      /* max-width: 417px; */
+      height: 736px;
+    }
+
+    .nodetext {
+      fill: white;
+      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
     }
 
     path.link {
@@ -33,11 +48,30 @@
       line-height: 28px;
       padding: 0 10px;
       color: #FFF;
+
+
+      /*2*/
+      position: absolute;
+      left: 40px;
+      top: 40px;
+      border-radius: 2px;
+      background: #A4CE4E;
+      box-shadow: none;
+      border: none;
+      font-size: 20px;
+      line-height: 28px;
+      padding: 0 10px;
+      color: #FFF;
+      border: 2px solid white;
+      border-radius: 10px;
+
     }
 
     #reset-btn:hover {
       text-decoration: underline;
-      background: #0090DA;
+      /* background: #0090DA; */
+      /*2*/
+      background: #B7DD58;
     }
   </style>
 </head>
@@ -62,35 +96,23 @@
       root;
 
     var vis;
-    var force = d3.force.initalize();
-
+    var force = d3.layout.force();
+    var zoom = d3.behavior.zoom();
     vis = d3.select("#vis")
       .append("svg")
-      .attr("width", w)
-      .attr("height", h)
-      .attr("viewBox", [0, 0, w, h])
-      .call(d3.zoom()
-        .scaleExtent([1, 5])
-        // .extent([
-        //     [0, 0],
-        //     [width, height]
-        // ])
-        .on("zoom", function () {
-          // node.attr("transform", d3.event.transform);
-          // link.attr("transform", d3.event.transform);
-          // d3.select(".tooltip-g rect").attr("transform", d3.event.transform);
-          // d3.select(".tooltip-g text").attr("transform", d3.event.transform);
-        }));
+      .attr("width", "100%")
+      .attr("height", "100%");
+
 
     d3.json("data/marvel.json", function (json) {
 
-      root = json;
+      root = idLowerCase(json);
       root.fixed = true;
       root.x = w / 2;
       root.y = h / 4;
 
 
-      // Build the path
+      // Build the patha
       var defs = vis.insert("svg:defs")
         .data(["end"]);
 
@@ -114,9 +136,9 @@
       // Restart the force layout.
       force.nodes(nodes)
         .links(links)
-        .gravity(0.05)
+        .gravity(0)
         .charge(-1500)
-        .linkDistance(100)
+        .linkDistance(80)
         .friction(0.5)
         .linkStrength(function (l, i) {
           return 1;
@@ -169,6 +191,7 @@
         .style("fill", "#eee");
 
 
+
       // Append images
       var images = nodeEnter.append("svg:image")
         .attr("xlink:href", function (d) {
@@ -182,6 +205,16 @@
         })
         .attr("height", 50)
         .attr("width", 50);
+
+      //zoom
+      // vis.attr("viewBox", [0, 0, w, h])
+      // .call(zoom.scaleExtent([0.4, 8])
+      //   .scale(0.4)
+      //   .on("zoom", function () {
+      //     d3.selectAll("g").attr("transform", d3.event.transform);
+      //     d3.selectAll("path").attr("transform", d3.event.transform);
+      //   }))
+
 
       // make the image grow a little on mouse over and add the text details on click
       var setEvents = images
@@ -301,6 +334,17 @@
 
       recurse(root);
       return nodes;
+    }
+
+    function idLowerCase(json) {
+      var jsonObject = json;
+      jsonObject.name = jsonObject.name.replace(" ", "").replace(/[^0-9a-zA-Z]/, "-").toLowerCase();
+      if (jsonObject.children != undefined && jsonObject.children.length != 0) {
+        for (key in jsonObject.children) {
+          jsonObject.children[key] = idLowerCase(jsonObject.children[key]);
+        }
+      }
+      return jsonObject;
     }
   </script>
 

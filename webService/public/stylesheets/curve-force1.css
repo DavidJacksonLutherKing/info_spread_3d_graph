@@ -1,7 +1,39 @@
 body {
-    margin: 0 auto
+    margin: 0 auto;
+    font-family: simsun
 }
 
 #transmission-chain-chart{
     background-color: #fff
+}
+
+text{
+    font-family: simsun;
+}
+
+.level{
+    float: left;
+    font-size:12px;
+    width: 33%;
+    padding-left: 20px
+}
+
+.level-circle{
+    width : 10px;
+    height : 10px;
+    float : left;
+    margin : 3px;    
+    border : #333 solid 2px;
+    border-radius : 10px;
+}
+.level-text{
+    float: left;
+}
+
+#legends{
+    float: left;
+}
+
+#chart-reset-btn{
+    float: left
 }

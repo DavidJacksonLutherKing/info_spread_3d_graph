@@ -10,7 +10,7 @@ const chart = function (data) {
         .force("link", d3.forceLink(links).id(d => d.id).distance(radius*10))
         .force("charge", d3.forceManyBody())
         .force("center", d3.forceCenter(width / 2, height / 2))
-        .force("collision", d3.forceCollide().radius(radius*3))
+        // .force("collision", d3.forceCollide().radius(radius*3))
 
     const svg = d3.create("svg")
         .attr("viewBox", [0, 0, width, height])
@@ -221,7 +221,7 @@ const showCurrentNode = function (rootID, data) {
     }
 }
 
-d3.json("data/nodes_routes.json").then(function (data) {
+d3.json("data/nodes_routes_1.json").then(function (data) {
     window.data = data;
     data.root = {}
     data.root.id = data.nodes[0].id;

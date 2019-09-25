@@ -182,14 +182,20 @@ NickNameUtil.getRandomChineseName = function () {
 //生成随机用户名，数字和字母组成,
 NickNameUtil.getStringRandom = function (length) {
     var val = "";
+    var lowerCaseChar = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"];
+    var upperCaseChar = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"];
+    for (key in upperCaseChar){
+        upperCaseChar[key] = upperCaseChar[key].toUpperCase();
+    }
     //参数length，表示生成几位随机数
     for (var i = 0; i < length; i++) {
         var charOrNum = Math.ceil(Math.random() * 2) % 2 == 0 ? "char" : "num";
         //输出字母还是数字
         if ("char" == charOrNum) {
             //输出是大写字母还是小写字母
-            var temp = Math.floor(Math.random() * 2) == 0 ? 65 : 97;
-            val += String.fromCharCode(Math.floor(Math.random() * 26) + temp);
+            var temp =  lowerCaseChar.concat(upperCaseChar);
+            var index = Math.floor(Math.random() * 52);
+            val += temp[index];
         } else if ("num" == charOrNum) {
             val += Math.floor(Math.random() * 10);
         }

@@ -14,8 +14,8 @@ text{
 .level{
     float: left;
     font-size:12px;
-    width: 33%;
-    padding-left: 20px
+    width: 16%;    
+    box-sizing: border-box;
 }
 
 .level-circle{
@@ -31,9 +31,5 @@ text{
 }
 
 #legends{
-    float: left;
-}
-
-#chart-reset-btn{
-    float: left
+    overflow: hidden;
 }

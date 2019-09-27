@@ -81,7 +81,10 @@ tc.renderChart = function (data) {
         .selectAll("path")
         .data(tc.svg.links)
         .join("path")
-        .attr("id", d => d.source.data.customerID + "-" + d.target.data.customerID)
+        .attr("id", d => d.source.data.customerID + "-" + d.target.data.customerID + "-line")
+        .attr("name", d => d.target.data.customerID + "-line")
+        .attr("class", "link-line")
+        .attr("end", d => d.target.data.customerID)
         .attr("is_shown", "true")
         .attr("stroke", "#999")
         .attr("stroke-width", tc.svg.lineStroke)
@@ -94,6 +97,7 @@ tc.renderChart = function (data) {
         .join("circle")
         .attr("class", "node-circle")
         .attr("is_shown", "true")
+        .attr("children_shown", "true")
         .attr("r", tc.svg.nodeRadius)
         .attr("fill", d => "url(#" + d.data.customerID + "-img)")
         .attr("id", d => d.data.customerID + "-circle")
@@ -121,10 +125,11 @@ tc.renderChart = function (data) {
         .join("text")
         .attr("font-size", tc.svg.fontSize)
         .attr("stroke", "black")
-        .attr("width", d => d.data.nickName.length * tc.svg.fontSize)
+        .attr("width", d => d.data.nickname.length * tc.svg.fontSize)
         .attr("height", 20)
-        .text(d => d.data.nickName + "," + d.data.gender)
-        .attr("id", d => d.data.customerID + "-nickName");
+        .text(d => d.data.nickname + "," + d.data.gender)
+        .attr("id", d => d.data.customerID + "-nickname")
+        .attr("class", "nickname");
 
     tc.svg.simulation.on("tick", () => {
         tc.svg.lineElements
@@ -132,7 +137,7 @@ tc.renderChart = function (data) {
             .attr("fill", "none");
 
         tc.svg.nameElements
-            .attr("x", d => d.x - d.data.nickName.length * tc.svg.fontSize / 2)
+            .attr("x", d => d.x - d.data.nickname.length * tc.svg.fontSize / 2)
             .attr("y", d => d.y + tc.svg.nodeRadius + tc.svg.fontSize * 1.5);
 
         tc.svg.nodeElements
@@ -145,21 +150,7 @@ tc.renderChart = function (data) {
         var result = tc.checkChildrenNodes(currentClickRoot, tc.svg.linkData);
         tc.hideOrShowChildren(currentClickRoot, tc.svg.linkData, this);
         console.log(result);
-    })
-    // tc.svg.events = tc.svg.nodeElements.on("click", function (d) {
-
-    //     if (d.children) {
-    //         d._children = d.children;
-    //         d.children = null;
-    //       } else {
-    //         d.children = d._children;
-    //         d._children = null;
-    //     }
-    //     console.log(d);
-    //     tc.renderChart(data);
-    // })
-
-
+    });
 
     console.log(tc.svg.svgElement);
     return tc.svg;
@@ -248,18 +239,44 @@ d3.json('data/curve-tree.json').then(function (data, err) {
     tc.svg.customEvents.hidenodes.initEvent("hidenodes", false, false);
     tc.svg.customEvents.shownodes = document.createEvent("HTMLEvents");
     tc.svg.customEvents.shownodes.initEvent("shownodes", false, false);
-    tc.temp.nodes = document.getElementsByClassName("node-circle")
+    tc.temp.nodes = document.getElementsByClassName("node-circle");
+    tc.temp.links = document.getElementsByClassName("link-line");
+    tc.temp.nodeNicknames = document.getElementsByClassName("nickname");
     for (nodeKey in tc.temp.nodes) {
         if (nodeKey.match(/[0-9]{1,}/)) {
-            tc.temp.nodes[nodeKey].addEventListener("hidenodes", function () {
+            tc.temp.nodes[nodeKey].addEventListener("hidenodes", function (event) {
                 var nodeId = "#" + this.getAttribute("id");
                 d3.select(nodeId).style("display", "none");
-                tc.svg.customEvents.hidenodes.rootDom.setAttribute("is_shown", "false");
+                this.setAttribute("is_shown", "false");
             });
             tc.temp.nodes[nodeKey].addEventListener("shownodes", function () {
                 var nodeId = "#" + this.getAttribute("id");
                 d3.select(nodeId).style("display", "block");
-                tc.svg.customEvents.shownodes.rootDom.setAttribute("is_shown", "true");
+                this.setAttribute("is_shown", "true");
+            });
+            tc.temp.nodeNicknames[nodeKey].addEventListener("hidenodes", function (event) {
+                var nodeId = "#" + this.getAttribute("id");
+                d3.select(nodeId).style("display", "none");
+                this.setAttribute("is_shown", "false");
+            });
+            tc.temp.nodeNicknames[nodeKey].addEventListener("shownodes", function () {
+                var nodeId = "#" + this.getAttribute("id");
+                d3.select(nodeId + "-nickname").style("display", "block");
+                this.setAttribute("is_shown", "true");
+            });
+        }
+    }
+    for (linkKey in tc.temp.links) {
+        if (linkKey.match(/[0-9]{1,}/)) {
+            tc.temp.links[linkKey].addEventListener("hidenodes", function (event) {
+                var linkId = "#" + this.getAttribute("id");
+                d3.select(linkId).style("display", "none");
+                this.setAttribute("is_shown", "false");
+            });
+            tc.temp.links[linkKey].addEventListener("shownodes", function () {
+                var linkId = "#" + this.getAttribute("id");
+                d3.select(linkId).style("display", "block");
+                this.setAttribute("is_shown", "true");
             });
         }
     }
@@ -270,20 +287,28 @@ tc.hideOrShowChildren = function (rootID, linkData, domObject) {
     var nodeArray = [];
     var nodes = childrenData.nodes;
     var links = childrenData.links;
-    //show hider
+    //show hide
+    var show = d3.select(domObject).attr("children_shown");
     for (key in nodes) {
         if (key.match(/[0-9]{1,}/)) {
             var nodeCircle = document.getElementById(nodes[key].trim() + "-circle");
-            var show = d3.select(domObject).attr("is_shown");
+            var nodeNickname = document.getElementById(nodes[key].trim() + "-nickname");
+            var link = document.getElementsByName(nodes[key].trim() + "-line")[0];
             // var show = true
             if (show == "true") {
                 tc.svg.customEvents.hidenodes.rootDom = domObject;
+                tc.svg.customEvents.hidenodes.rootDom.setAttribute("children_shown", "false");
                 // console.log( tc.svg.customEvents.hidenodes.rootDom);
                 nodeCircle.dispatchEvent(tc.svg.customEvents.hidenodes);
+                nodeNickname.dispatchEvent(tc.svg.customEvents.hidenodes);
+                link.dispatchEvent(tc.svg.customEvents.hidenodes);
             } else {
                 tc.svg.customEvents.shownodes.rootDom = domObject;
+                tc.svg.customEvents.shownodes.rootDom.setAttribute("children_shown", "true");
                 // console.log( tc.svg.customEvents.shownodes.rootDom);
                 nodeCircle.dispatchEvent(tc.svg.customEvents.shownodes);
+                nodeNickname.dispatchEvent(tc.svg.customEvents.shownodes);
+                link.dispatchEvent(tc.svg.customEvents.shownodes);
             }
         }
     }

@@ -1,74 +1,67 @@
 {
     "treeData": {
         "customerID": "K17nV18rU602ZGks2B9033Ek268mmv",
-        "nickName": "鄂智阳",
+        "nickname": "鄂智阳",
         "value": 1000,
         "gender": "男",
         "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/top_spiderman.png",
         "children": [{
-                "nickName": "殳磊",
+                "nickname": "殳磊",
                 "customerID": "kfPl80e2401ZG1Q3VpU3hT0yVJr512",
                 "value": 1000,
                 "gender": "男",
                 "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/top_spiderman.png",
                 "children": [{
-                        "nickName": "靳昌淼",
+                        "nickname": "靳昌淼",
                         "customerID": "U1DE9J5047w3HM37ZjkeU271N4L376",
                         "value": 1000,
                         "gender": "男",
                         "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/top_spiderman.png"
                     },
                     {
-                        "nickName": "勾昆卉",
+                        "nickname": "勾昆卉",
                         "customerID": "g004u4oUK8690YtE93ZA91ws80Y3r4",
                         "value": 1000,
                         "gender": "男",
                         "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/top_captainmarvel.png"
                     },
                     {
-                        "nickName": "满昆鹏",
+                        "nickname": "满昆鹏",
                         "customerID": "wg2MxRdg12f3Va4UME7ZIhnsTwcr65",
                         "value": 1000,
                         "gender": "男",
                         "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/top_hulk.png"
                     },
                     {
-                        "nickName": "华鸿晖",
+                        "nickname": "华鸿晖",
                         "customerID": "D8VIT7NvaeAf3U9TPN2354H0iXGZg1",
                         "value": 1000,
                         "gender": "男",
                         "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/top_blackwidow.png"
                     },
                     {
-                        "nickName": "国旭彬",
-                        "customerID": "frkWgFbx5u6TZ771dft0Q29v53f477",
-                        "value": 1000,
-                        "gender": "男",
-                        "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/top_daredevil.png"
-                    },
-                    {
-                        "nickName": "孟昆纶",
+                        "nickname": "孟昆纶",
                         "customerID": "K19z2U7pbj38H0ZBG7a11Nu968C42q",
                         "value": 1000,
                         "gender": "男",
                         "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/top_wolverine.png"
                     },
                     {
-                        "nickName": "解文景",
+                        "nickname": "解文景",
                         "customerID": "T44Y9NZ9kiXoM713196z9K8S70Xa1P",
                         "value": 1000,
                         "gender": "男",
                         "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/top_captainamerica.png"
                     },
                     {
-                        "nickName": "皮昌盛",
+                        "nickname": "皮昌盛",
                         "customerID": "Vwp5omL1x1D9z635N159868s7L9994",
                         "value": 1000,
                         "gender": "男",
                         "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/top_ironman.png"
                     },
                     {
-                        "nickName": "丰震博",
+                        "nickname": "丰震博",
                         "customerID": "C5SnsLgd6OwM2y36h43M1hg4wq5l15",
                         "value": 1000,
                         "gender": "男",
@@ -78,54 +71,54 @@
             },
             {
                 "customerID": "V78Wu87552B3jP483Zz4ve3y5N547P",
-                "nickName": "冀昆皓",
+                "nickname": "冀昆皓",
                 "value": 1000,
                 "gender": "男",
                 "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/drdoom.png",
                 "children": [{
-                        "nickName": "席昌黎",
+                        "nickname": "席昌黎",
                         "customerID": "CV42RQ0tyBwp53y3a0gy5176n81K4K",
                         "value": 1000,
                         "gender": "男",
                         "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/drdoom.png"
                     },
                     {
-                        "nickName": "狄新曦",
+                        "nickname": "狄新曦",
                         "customerID": "EYyU57736g085Eb24R1391qF1LUA81",
                         "value": 1000,
                         "gender": "男",
                         "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/mystique.png"
                     },
                     {
-                        "nickName": "麻智伟",
+                        "nickname": "麻智伟",
                         "customerID": "Fqb42C30Yg4A812Tf2OItTMvy06535",
                         "value": 1000,
                         "gender": "男",
                         "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/redskull.png"
                     },
                     {
-                        "nickName": "双鸿波",
+                        "nickname": "双鸿波",
                         "customerID": "E7Q53YT7eSV8U7H5ez367TH6wI2d32",
                         "value": 1000,
                         "gender": "男",
                         "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/ronan.png"
                     },
                     {
-                        "nickName": "夹谷德昌",
+                        "nickname": "夹谷德昌",
                         "customerID": "f344IRii7LA53C14mHJXK79d11ut01",
                         "value": 1000,
                         "gender": "男",
                         "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/magneto.png"
                     },
                     {
-                        "nickName": "宰父智阳",
+                        "nickname": "宰父智阳",
                         "customerID": "oiLIo753M1M44788wX76Z46Xn1k31g",
                         "value": 1000,
                         "gender": "男",
                         "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/thanos.png"
                     },
                     {
-                        "nickName": "糜景浩",
+                        "nickname": "糜景浩",
                         "customerID": "l9h2g438C3xqA44WST83B69yPI5iqE",
                         "value": 1000,
                         "gender": "男",
@@ -135,51 +128,44 @@
             },
             {
                 "customerID": "Z661f1uI90x8x471my2vh7U4Iez7MW",
-                "nickName": "汲海昌",
+                "nickname": "汲海昌",
                 "value": 1000,
                 "gender": "男",
                 "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/avengers.png",
                 "children": [{
-                        "nickName": "石磊",
+                        "nickname": "石磊",
                         "customerID": "E5rLu6680eYdz1x716R8x8kg3Vo963",
                         "value": 1000,
                         "gender": "男",
                         "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/avengers.png"
                     },
                     {
-                        "nickName": "齐晋鹏",
+                        "nickname": "齐晋鹏",
                         "customerID": "WK63j054Afex6F8Ux3AU06124Xdk79",
                         "value": 1000,
                         "gender": "男",
                         "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/gofgalaxy.png"
                     },
                     {
-                        "nickName": "鱼鸿宝",
+                        "nickname": "鱼鸿宝",
                         "customerID": "X3gLs0YbjksF9X73b50DlOI763wja3",
                         "value": 1000,
                         "gender": "男",
                         "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/defenders.png"
                     },
                     {
-                        "nickName": "欧阳昌黎",
+                        "nickname": "欧阳昌黎",
                         "customerID": "WsIi49qI6114Sx8KvyNM911f97r7Sa",
                         "value": 1000,
                         "gender": "男",
                         "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/xmen.png"
                     },
                     {
-                        "nickName": "巴星腾",
+                        "nickname": "巴星腾",
                         "customerID": "u163Rs3R31P161Ardk280a6H9qwB6i",
                         "value": 1000,
                         "gender": "男",
                         "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/fantasticfour.png"
-                    },
-                    {
-                        "nickName": "丰曜灿",
-                        "customerID": "n55843H72TN2h76E0j5B2Z501U4YR1",
-                        "value": 1000,
-                        "gender": "男",
-                        "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/inhumans.png"
                     }
                 ]
             }
@@ -188,154 +174,142 @@
     "linkData": {
         "nodes": [{
                 "customerID": "K17nV18rU602ZGks2B9033Ek268mmv",
-                "nickName": "鄂智阳",
+                "nickname": "鄂智阳",
                 "gender": "男",
                 "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/top_spiderman.png"
             }, {
-                "nickName": "殳磊",
+                "nickname": "殳磊",
                 "customerID": "kfPl80e2401ZG1Q3VpU3hT0yVJr512",
                 "gender": "男",
                 "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/top_spiderman.png"
             }, {
                 "customerID": "V78Wu87552B3jP483Zz4ve3y5N547P",
-                "nickName": "冀昆皓",
+                "nickname": "冀昆皓",
                 "gender": "男",
                 "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/drdoom.png"
             }, {
                 "customerID": "Z661f1uI90x8x471my2vh7U4Iez7MW",
-                "nickName": "汲海昌",
+                "nickname": "汲海昌",
                 "gender": "男",
                 "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/avengers.png"
             }, {
-                "nickName": "靳昌淼",
+                "nickname": "靳昌淼",
                 "customerID": "U1DE9J5047w3HM37ZjkeU271N4L376",
                 "gender": "男",
                 "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/top_spiderman.png"
             },
             {
-                "nickName": "勾昆卉",
+                "nickname": "勾昆卉",
                 "customerID": "g004u4oUK8690YtE93ZA91ws80Y3r4",
                 "gender": "男",
                 "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/top_captainmarvel.png"
             },
             {
-                "nickName": "满昆鹏",
+                "nickname": "满昆鹏",
                 "customerID": "wg2MxRdg12f3Va4UME7ZIhnsTwcr65",
                 "gender": "男",
                 "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/top_hulk.png"
             },
             {
-                "nickName": "华鸿晖",
+                "nickname": "华鸿晖",
                 "customerID": "D8VIT7NvaeAf3U9TPN2354H0iXGZg1",
                 "gender": "男",
                 "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/top_blackwidow.png"
             },
             {
-                "nickName": "国旭彬",
-                "customerID": "frkWgFbx5u6TZ771dft0Q29v53f477",
-                "gender": "男",
-                "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/top_daredevil.png"
-            },
-            {
-                "nickName": "孟昆纶",
+                "nickname": "孟昆纶",
                 "customerID": "K19z2U7pbj38H0ZBG7a11Nu968C42q",
                 "gender": "男",
                 "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/top_wolverine.png"
             },
             {
-                "nickName": "解文景",
+                "nickname": "解文景",
                 "customerID": "T44Y9NZ9kiXoM713196z9K8S70Xa1P",
                 "gender": "男",
                 "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/top_captainamerica.png"
             },
             {
-                "nickName": "皮昌盛",
+                "nickname": "皮昌盛",
                 "customerID": "Vwp5omL1x1D9z635N159868s7L9994",
                 "gender": "男",
                 "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/top_ironman.png"
             },
             {
-                "nickName": "丰震博",
+                "nickname": "丰震博",
                 "customerID": "C5SnsLgd6OwM2y36h43M1hg4wq5l15",
                 "gender": "男",
                 "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/top_thor.png"
             }, {
-                "nickName": "席昌黎",
+                "nickname": "席昌黎",
                 "customerID": "CV42RQ0tyBwp53y3a0gy5176n81K4K",
                 "gender": "男",
                 "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/drdoom.png"
             },
             {
-                "nickName": "狄新曦",
+                "nickname": "狄新曦",
                 "customerID": "EYyU57736g085Eb24R1391qF1LUA81",
                 "gender": "男",
                 "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/mystique.png"
             },
             {
-                "nickName": "麻智伟",
+                "nickname": "麻智伟",
                 "customerID": "Fqb42C30Yg4A812Tf2OItTMvy06535",
                 "gender": "男",
                 "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/redskull.png"
             },
             {
-                "nickName": "双鸿波",
+                "nickname": "双鸿波",
                 "customerID": "E7Q53YT7eSV8U7H5ez367TH6wI2d32",
                 "gender": "男",
                 "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/ronan.png"
             },
             {
-                "nickName": "夹谷德昌",
+                "nickname": "夹谷德昌",
                 "customerID": "f344IRii7LA53C14mHJXK79d11ut01",
                 "gender": "男",
                 "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/magneto.png"
             },
             {
-                "nickName": "宰父智阳",
+                "nickname": "宰父智阳",
                 "customerID": "oiLIo753M1M44788wX76Z46Xn1k31g",
                 "gender": "男",
                 "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/thanos.png"
             },
             {
-                "nickName": "糜景浩",
+                "nickname": "糜景浩",
                 "customerID": "l9h2g438C3xqA44WST83B69yPI5iqE",
                 "gender": "男",
                 "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/blackcat.png"
             },
             {
-                "nickName": "石磊",
+                "nickname": "石磊",
                 "customerID": "E5rLu6680eYdz1x716R8x8kg3Vo963",
                 "gender": "男",
                 "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/avengers.png"
             },
             {
-                "nickName": "齐晋鹏",
+                "nickname": "齐晋鹏",
                 "customerID": "WK63j054Afex6F8Ux3AU06124Xdk79",
                 "gender": "男",
                 "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/gofgalaxy.png"
             },
             {
-                "nickName": "鱼鸿宝",
+                "nickname": "鱼鸿宝",
                 "customerID": "X3gLs0YbjksF9X73b50DlOI763wja3",
                 "gender": "男",
                 "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/defenders.png"
             },
             {
-                "nickName": "欧阳昌黎",
+                "nickname": "欧阳昌黎",
                 "customerID": "WsIi49qI6114Sx8KvyNM911f97r7Sa",
                 "gender": "男",
                 "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/xmen.png"
             },
             {
-                "nickName": "巴星腾",
+                "nickname": "巴星腾",
                 "customerID": "u163Rs3R31P161Ardk280a6H9qwB6i",
                 "gender": "男",
                 "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/fantasticfour.png"
-            },
-            {
-                "nickName": "丰曜灿",
-                "customerID": "n55843H72TN2h76E0j5B2Z501U4YR1",
-                "gender": "男",
-                "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/inhumans.png"
             }
         ],
         "links": [{
@@ -399,11 +373,6 @@
                 "value": 1000
             },
             {
-                "source": "kfPl80e2401ZG1Q3VpU3hT0yVJr512",
-                "target": "n55843H72TN2h76E0j5B2Z501U4YR1",
-                "value": 1000
-            },
-            {
                 "source": "V78Wu87552B3jP483Zz4ve3y5N547P",
                 "target": "EYyU57736g085Eb24R1391qF1LUA81",
                 "value": 1000
@@ -461,11 +430,6 @@
             {
                 "source": "Z661f1uI90x8x471my2vh7U4Iez7MW",
                 "target": "X3gLs0YbjksF9X73b50DlOI763wja3",
-                "value": 1000
-            },
-            {
-                "source": "Z661f1uI90x8x471my2vh7U4Iez7MW",
-                "target": "frkWgFbx5u6TZ771dft0Q29v53f477",
                 "value": 1000
             }
         ]

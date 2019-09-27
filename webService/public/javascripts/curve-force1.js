@@ -120,6 +120,7 @@ tc.renderChart = function (data) {
 
     tc.svg.nameElements = tc.svg.svgElement.append("g")
         .attr("class", "text")
+        .attr("is_shown", "true")
         .selectAll("text")
         .data(tc.svg.nodes)
         .join("text")
@@ -149,7 +150,7 @@ tc.renderChart = function (data) {
         var currentClickRoot = this.id.replace("-circle", "");
         var result = tc.checkChildrenNodes(currentClickRoot, tc.svg.linkData);
         tc.hideOrShowChildren(currentClickRoot, tc.svg.linkData, this);
-        console.log(result);
+        // console.log(result);
     });
 
     console.log(tc.svg.svgElement);
@@ -227,11 +228,24 @@ d3.json('data/curve-tree.json').then(function (data, err) {
     resetButton.setAttribute("id", "chart-reset-btn");
     resetButton.innerText = "重置";
     resetButtonDiv.appendChild(resetButton);
+
     var chartSVG = tc.renderChart(tc.svg.treeData);
     document.getElementById("transmission-chain-chart").append(resetButtonDiv);
     resetButtonDiv.style.width = window.innerWidth + "px";
+
+
     document.getElementById("transmission-chain-chart").append(legends);
-    document.getElementById("transmission-chain-chart").append(chartSVG.svgElement.node());
+
+    var svgDiv = document.createElement("div")
+    svgDiv.setAttribute("id", "chain-svg-div");
+    document.getElementById("transmission-chain-chart").append(svgDiv);
+    document.getElementById("chain-svg-div").append(chartSVG.svgElement.node());
+    resetButton.addEventListener("click", function () {
+        document.getElementById("chain-svg-div").innerHTML="";
+        var chartSVG = tc.renderChart(tc.svg.treeData);
+        document.getElementById("chain-svg-div").append(chartSVG.svgElement.node());
+
+    });
 
     //Custom Event
     tc.svg.customEvents = {};
@@ -261,7 +275,7 @@ d3.json('data/curve-tree.json').then(function (data, err) {
             });
             tc.temp.nodeNicknames[nodeKey].addEventListener("shownodes", function () {
                 var nodeId = "#" + this.getAttribute("id");
-                d3.select(nodeId + "-nickname").style("display", "block");
+                d3.select(nodeId).style("display", "block");
                 this.setAttribute("is_shown", "true");
             });
         }

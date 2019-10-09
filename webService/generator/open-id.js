@@ -6,14 +6,12 @@ $("#generate").click(function () {
     var fixed_weight = $("input[name=fixed-weight]").val();
     nodeLink.nodes = [];
     nodeLink.links = [];
-    nodeLink.H5ID="XXXX";
     for (var i = 0; i < num; i++) {
         var node = {};
-        node.customerID = NickNameUtil.getStringRandom(30);
+        node.id = NickNameUtil.getStringRandom(30);
         node.nickName = NickNameUtil.getRandomName(4);                
         node.gender=Math.round(Math.random())==1?'男':'女';
-        node.img="";
-        node.agentID = "000";
+        node.filePath="";
         nodeLink.nodes.push(node);
     }
     var nodes = nodeLink.nodes;
@@ -21,19 +19,42 @@ $("#generate").click(function () {
     for (key in nodes) {
         var randomTargetKey = Math.floor(Math.random() * nodes.length);
         link = {}
-        link.customerID = nodes[key].customerID;
-        if(nodes[randomTargetKey].customerID==link.customerID){
+        link.source = nodes[key].id;
+        if(nodes[randomTargetKey].id==link.source){
             i++;
             continue;
         }else{
-            link.forwardUserID = nodes[randomTargetKey].customerID;
+            link.target = nodes[randomTargetKey].id;
             link.value = fixed_weight_checked ? fixed_weight : Math.ceil(Math.random() * 20);
-            link.datetime = new Date();
-            link.pageURL = "";
-            link.pageName = "";
-            nodeLink.links.push(link);            
-        }       
+            nodeLink.links.push(link);
+        }
     }
+    for (key in nodes) {
+        var randomTargetKey = Math.floor(Math.random() * nodes.length);
+        link = {}
+        link.source = nodes[key].id;
+        if(nodes[randomTargetKey].id==link.source){
+            i++;
+            continue;
+        }else{
+            link.target = nodes[randomTargetKey].id;
+            link.value = fixed_weight_checked ? fixed_weight : Math.ceil(Math.random() * 20);
+            nodeLink.links.push(link);
+        }
+    }
+    // for (key in nodes) {
+    //     var randomTargetKey = Math.floor(Math.random() * nodes.length);
+    //     link = {}
+    //     link.source = nodes[key].id;
+    //     if(nodes[randomTargetKey].id==link.source){
+    //         i++;
+    //         continue;
+    //     }else{
+    //         link.target = nodes[randomTargetKey].id;
+    //         link.value = fixed_weight_checked ? fixed_weight : Math.ceil(Math.random() * 20);
+    //         nodeLink.links.push(link);
+    //     }
+    // }
     console.log(i);
     $("#result").val(JSON.stringify(nodeLink));
     console.log(nodeLink);

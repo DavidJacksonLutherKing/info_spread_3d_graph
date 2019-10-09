@@ -33,3 +33,16 @@ text{
 #legends{
     overflow: hidden;
 }
+
+#chart-reset-btn {
+    text-decoration: underline;
+    background: #007ABC;   
+    font-size: 20px;
+    line-height: 28px;
+    padding: 0 10px;
+    color: #FFF;
+    border: 2px solid white;
+    border-radius: 10px;
+    border-color:#999;
+    margin: 10px;
+}

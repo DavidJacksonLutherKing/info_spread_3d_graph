@@ -24,10 +24,6 @@ tc.svg = tc.svg || {
     circleBorderWidth: 5,
     fontSize: 12,
     manybodyStrength: -1000,
-    legends: {
-        elments: new Object(),
-        create: new Function()
-    },
     drag: function (simulation) {
         function dragstarted(d) {
             if (!d3.event.active) simulation.alphaTarget(0.3).restart();
@@ -73,7 +69,8 @@ tc.renderChart = function (data) {
                 tc.svg.nodeElements.attr("transform", d3.event.transform);
                 tc.svg.lineElements.attr("transform", d3.event.transform);
                 tc.svg.nameElements.attr("transform", d3.event.transform);
-            }));
+            }))
+            .on('dblclick.zoom', null);
 
 
     tc.svg.lineElements = tc.svg.svgElement.append("g")
@@ -146,73 +143,10 @@ tc.renderChart = function (data) {
             .attr("cy", d => d.y);
     });
 
-    tc.svg.events = tc.svg.nodeElements.on("click", function () {
-        var currentClickRoot = this.id.replace("-circle", "");
-        var result = tc.checkChildrenNodes(currentClickRoot, tc.svg.linkData);
-        tc.hideOrShowChildren(currentClickRoot, tc.svg.linkData, this);
-        // console.log(result);
-    });
-
     console.log(tc.svg.svgElement);
     return tc.svg;
 }
 
-
-tc.svg.legends.create = function () {
-    tc.svg.legends.elments = document.createElement("div");
-    tc.svg.legends.elments.setAttribute("id", "legends");
-    tc.svg.legends.elments.setAttribute("width", "100%");
-    tc.svg.legends.elments.setAttribute("height", "100%");
-    var json = [{
-        color: "#0090DA",
-        text: "根",
-        id: "root-level"
-    }, {
-        color: "#A4CE4E",
-        text: "一级",
-        id: "first-level"
-    }, {
-        color: "#DB0A5B",
-        text: "二级",
-        id: "second-level"
-    }, {
-        color: "#00ACA0",
-        text: "三级",
-        id: "third-level"
-    }, {
-        color: "#5F259F",
-        text: "四级",
-        id: "fourth-level"
-    }, {
-        color: "#FFC600",
-        text: "五级",
-        id: "fifth-level"
-    }];
-    for (key in json) {
-        var legendSample = tc.createLegendSample(json[key]);
-        tc.svg.legends.elments.appendChild(legendSample);
-    }
-    return tc.svg.legends.elments;
-}
-
-tc.createLegendSample = function (json) {
-    var legendSample = document.createElement("div");
-    legendSample.setAttribute("id", json.id);
-    legendSample.setAttribute("class", "level");
-    var legendSampleColor = document.createElement("div");
-    legendSampleColor.style.backgroundColor = json.color;
-    legendSampleColor.setAttribute("class", json.id + " level-circle")
-    var legendSampleText = document.createElement("div");
-    legendSampleText.innerText = json.text;
-    legendSampleText.style.fontFamily = "simsun";
-    legendSampleText.style.fontSize = tc.svg.fontSize + 2 + "px";
-    legendSampleText.style.lineHeight = tc.svg.fontSize + 2 + "px";
-    legendSampleText.style.paddingTop = "4px";
-    legendSampleText.setAttribute("class", json.id + " level-text");
-    legendSample.appendChild(legendSampleColor);
-    legendSample.appendChild(legendSampleText);
-    return legendSample;
-}
 
 //Fetch Chain Data from JSON File and callback function to influence the data to d3 chart
 d3.json('data/curve-tree.json').then(function (data, err) {
@@ -220,8 +154,7 @@ d3.json('data/curve-tree.json').then(function (data, err) {
     console.log(err);
     tc.svg.treeData = data.treeData;
     tc.svg.linkData = data.linkData;
-    var legends = tc.svg.legends.create();
-    console.log(legends);
+   
     var resetButtonDiv = document.createElement("div");
     resetButtonDiv.setAttribute("id", "reset-div");
     var resetButton = document.createElement("button");
@@ -233,9 +166,6 @@ d3.json('data/curve-tree.json').then(function (data, err) {
     document.getElementById("transmission-chain-chart").append(resetButtonDiv);
     resetButtonDiv.style.width = window.innerWidth + "px";
 
-
-    document.getElementById("transmission-chain-chart").append(legends);
-
     var svgDiv = document.createElement("div")
     svgDiv.setAttribute("id", "chain-svg-div");
     document.getElementById("transmission-chain-chart").append(svgDiv);
@@ -246,114 +176,4 @@ d3.json('data/curve-tree.json').then(function (data, err) {
         document.getElementById("chain-svg-div").append(chartSVG.svgElement.node());
 
     });
-
-    //Custom Event
-    tc.svg.customEvents = {};
-    tc.svg.customEvents.hidenodes = document.createEvent("HTMLEvents");
-    tc.svg.customEvents.hidenodes.initEvent("hidenodes", false, false);
-    tc.svg.customEvents.shownodes = document.createEvent("HTMLEvents");
-    tc.svg.customEvents.shownodes.initEvent("shownodes", false, false);
-    tc.temp.nodes = document.getElementsByClassName("node-circle");
-    tc.temp.links = document.getElementsByClassName("link-line");
-    tc.temp.nodeNicknames = document.getElementsByClassName("nickname");
-    for (nodeKey in tc.temp.nodes) {
-        if (nodeKey.match(/[0-9]{1,}/)) {
-            tc.temp.nodes[nodeKey].addEventListener("hidenodes", function (event) {
-                var nodeId = "#" + this.getAttribute("id");
-                d3.select(nodeId).style("display", "none");
-                this.setAttribute("is_shown", "false");
-            });
-            tc.temp.nodes[nodeKey].addEventListener("shownodes", function () {
-                var nodeId = "#" + this.getAttribute("id");
-                d3.select(nodeId).style("display", "block");
-                this.setAttribute("is_shown", "true");
-            });
-            tc.temp.nodeNicknames[nodeKey].addEventListener("hidenodes", function (event) {
-                var nodeId = "#" + this.getAttribute("id");
-                d3.select(nodeId).style("display", "none");
-                this.setAttribute("is_shown", "false");
-            });
-            tc.temp.nodeNicknames[nodeKey].addEventListener("shownodes", function () {
-                var nodeId = "#" + this.getAttribute("id");
-                d3.select(nodeId).style("display", "block");
-                this.setAttribute("is_shown", "true");
-            });
-        }
-    }
-    for (linkKey in tc.temp.links) {
-        if (linkKey.match(/[0-9]{1,}/)) {
-            tc.temp.links[linkKey].addEventListener("hidenodes", function (event) {
-                var linkId = "#" + this.getAttribute("id");
-                d3.select(linkId).style("display", "none");
-                this.setAttribute("is_shown", "false");
-            });
-            tc.temp.links[linkKey].addEventListener("shownodes", function () {
-                var linkId = "#" + this.getAttribute("id");
-                d3.select(linkId).style("display", "block");
-                this.setAttribute("is_shown", "true");
-            });
-        }
-    }
 });
-
-tc.hideOrShowChildren = function (rootID, linkData, domObject) {
-    var childrenData = tc.checkChildrenNodes(rootID, linkData);
-    var nodeArray = [];
-    var nodes = childrenData.nodes;
-    var links = childrenData.links;
-    //show hide
-    var show = d3.select(domObject).attr("children_shown");
-    for (key in nodes) {
-        if (key.match(/[0-9]{1,}/)) {
-            var nodeCircle = document.getElementById(nodes[key].trim() + "-circle");
-            var nodeNickname = document.getElementById(nodes[key].trim() + "-nickname");
-            var link = document.getElementsByName(nodes[key].trim() + "-line")[0];
-            // var show = true
-            if (show == "true") {
-                tc.svg.customEvents.hidenodes.rootDom = domObject;
-                tc.svg.customEvents.hidenodes.rootDom.setAttribute("children_shown", "false");
-                // console.log( tc.svg.customEvents.hidenodes.rootDom);
-                nodeCircle.dispatchEvent(tc.svg.customEvents.hidenodes);
-                nodeNickname.dispatchEvent(tc.svg.customEvents.hidenodes);
-                link.dispatchEvent(tc.svg.customEvents.hidenodes);
-            } else {
-                tc.svg.customEvents.shownodes.rootDom = domObject;
-                tc.svg.customEvents.shownodes.rootDom.setAttribute("children_shown", "true");
-                // console.log( tc.svg.customEvents.shownodes.rootDom);
-                nodeCircle.dispatchEvent(tc.svg.customEvents.shownodes);
-                nodeNickname.dispatchEvent(tc.svg.customEvents.shownodes);
-                link.dispatchEvent(tc.svg.customEvents.shownodes);
-            }
-        }
-    }
-}
-
-tc.checkChildrenNodes = function (rootID, linkData) {
-    var result = {};
-    result.nodes = [];
-    result.links = [];
-    var children = [];
-    var level = 0;
-    children[level] = [rootID];
-    var links = linkData.links;
-    for (linkKey in links) {
-        for (level = 0; level < 6; level++) {
-            for (childrenKey in children[level]) {
-                rootID = children[level][childrenKey];
-                if (rootID == links[linkKey].source) {
-                    result.links.push(links[linkKey].source + "-" + links[linkKey].target);
-                    result.nodes.push(links[linkKey].target);
-                    if (!children[level + 1]) {
-                        children[level + 1] = []
-                    }
-                    children[level + 1].push(links[linkKey].target);
-                    // console.log("result");
-                    // console.log(result);
-                    // console.log("children");
-                    // console.log(children);
-                }
-            }
-        }
-    }
-    return result;
-}

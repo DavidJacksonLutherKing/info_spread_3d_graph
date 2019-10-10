@@ -16,25 +16,57 @@ $("#generate").click(function () {
         node.agentID = "000";
         nodeLink.nodes.push(node);
     }
-    var nodes = nodeLink.nodes;
+    var nodes = Object.assign([],nodeLink.nodes);
     i=0;
-    for (key in nodes) {
-        var randomTargetKey = Math.floor(Math.random() * nodes.length);
-        link = {}
-        link.customerID = nodes[key].customerID;
-        if(nodes[randomTargetKey].customerID==link.customerID){
+    var levelArray = [];
+    var levelArrayLength = [];
+    while(nodes.length!=0){
+        if(i==0){
+            levelArray[i] =[];
+            levelArray[i][0]= nodes.pop();
+            levelArrayLength[i] = 1; 
             i++;
-            continue;
         }else{
-            link.forwardUserID = nodes[randomTargetKey].customerID;
+            var random = Math.ceil(levelArrayLength[i-1]*Math.random()*12);
+            levelArrayLength[i] = random; 
+            levelArray[i] = [];
+            for( var j =0 ; j<random&&nodes.length>0;j++){
+                levelArray[i].push(nodes.pop());
+            }           
+            i++;
+        }        
+    }
+    console.log(levelArrayLength);
+    console.log(levelArray);
+    var newLevelArray = Object.assign([],levelArray);
+    nodeLink.rootID = newLevelArray[0][0].customerID;
+    var link = {};
+    for (key in newLevelArray) {
+        var nextKey = parseInt(key)+1;
+        if(newLevelArray[nextKey]==undefined){
+            break;
+        }        
+        var currentLevel = newLevelArray[key];
+        var nextLevel = newLevelArray[nextKey];            
+        var Clength = currentLevel.length;
+        var Nlength = nextLevel.length;
+        var random = Math.floor(Nlength/Clength);
+        
+        for( var a =0 ;nextLevel.length>0 ;a++){
+            if(a==0){
+                link.customerID = currentLevel.pop();
+            }            
+            link.forwardUserID = nextLevel.pop();
             link.value = fixed_weight_checked ? fixed_weight : Math.ceil(Math.random() * 20);
             link.datetime = new Date();
             link.pageURL = "";
             link.pageName = "";
-            nodeLink.links.push(link);            
-        }       
-    }
-    console.log(i);
+            nodeLink.links.push(link); 
+            if(a+1>=random){
+                a=0;
+            }
+        }          
+    }        
     $("#result").val(JSON.stringify(nodeLink));
     console.log(nodeLink);
 });

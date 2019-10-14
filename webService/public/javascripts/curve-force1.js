@@ -99,7 +99,7 @@ tc.renderChart = function (data) {
         .attr("fill", d => "url(#" + d.data.customerID + "-img)")
         .attr("id", d => d.data.customerID + "-circle")
         .attr("stroke", "yellow")
-        .attr("stroke-width", tc.svg.circleBorderWidth)
+        .attr("stroke-width", tc.svg.circleBorderWidth)           
         .call(tc.svg.drag(tc.svg.simulation));
 
     tc.svg.imgElements = tc.svg.svgElement.append("defs")
@@ -174,6 +174,19 @@ d3.json('data/curve-tree.json').then(function (data, err) {
         document.getElementById("chain-svg-div").innerHTML="";
         var chartSVG = tc.renderChart(tc.svg.treeData);
         document.getElementById("chain-svg-div").append(chartSVG.svgElement.node());
-
+        tc.showNickName();
     });
+    tc.showNickName();
 });
+
+tc.showNickName = function(){
+    d3.selectAll("circle").on("click",function(){
+        var textId = this.id.replace('-circle','-nickname');
+        var textDisplay = document.getElementById(textId).style.display;
+        if(textDisplay == 'none'||textDisplay ==''){
+            document.getElementById(textId).style.display ='block';
+        }else{
+            document.getElementById(textId).style.display ='none';
+        }
+    });
+}

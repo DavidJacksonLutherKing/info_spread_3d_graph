@@ -6,73 +6,67 @@ $("#generate").click(function () {
     var fixed_weight = $("input[name=fixed-weight]").val();
     nodeLink.nodes = [];
     nodeLink.links = [];
-    nodeLink.H5ID="XXXX";
+    nodeLink.H5ID = "XXXX";
     for (var i = 0; i < num; i++) {
         var node = {};
         node.customerID = NickNameUtil.getStringRandom(30);
-        node.nickName = NickNameUtil.getRandomName(4);                
-        node.gender=Math.round(Math.random())==1?'男':'女';
-        node.img="";
+        node.nickName = NickNameUtil.getRandomName(4);
+        node.gender = Math.round(Math.random()) == 1 ? '男' : '女';
+        node.img = "";
         node.agentID = "000";
         nodeLink.nodes.push(node);
     }
-    var nodes = Object.assign([],nodeLink.nodes);
-    i=0;
+    var nodes = Object.assign([], nodeLink.nodes);
+    i = 0;
     var levelArray = [];
     var levelArrayLength = [];
-    while(nodes.length!=0){
-        if(i==0){
-            levelArray[i] =[];
-            levelArray[i][0]= nodes.pop();
-            levelArrayLength[i] = 1; 
-            i++;
-        }else{
-            var random = Math.ceil(levelArrayLength[i-1]*Math.random()*12);
-            levelArrayLength[i] = random; 
+    while (nodes.length != 0) {
+        if (i == 0) {
             levelArray[i] = [];
-            for( var j =0 ; j<random&&nodes.length>0;j++){
-                levelArray[i].push(nodes.pop());
-            }           
+            levelArray[i][0] = nodes.pop();
+            levelArrayLength[i] = 1;
             i++;
-        }        
+        } else {
+            var random = levelArrayLength[i - 1] * Math.ceil(Math.random() * 12);
+            levelArrayLength[i] = random;
+            levelArray[i] = [];
+            for (var j = 0; j < random && nodes.length > 0; j++) {
+                levelArray[i].push(nodes.pop());
+            }
+            i++;
+        }
     }
     console.log(levelArrayLength);
     console.log(levelArray);
-    var newLevelArray = Object.assign([],levelArray);
+    var newLevelArray = Object.assign([], levelArray);
     nodeLink.rootID = newLevelArray[0][0].customerID;
     var link = {};
-    for (key in newLevelArray) {
-        var nextKey = parseInt(key)+1;
-        if(newLevelArray[nextKey]==undefined){
-            break;
-        }        
-        var currentLevel = newLevelArray[key];
-        var nextLevel = newLevelArray[nextKey];            
-        var Clength = currentLevel.length;
-        var Nlength = nextLevel.length;
-        var random = Math.floor(Nlength/Clength);
-        
-        for( var a =0 ;nextLevel.length>0 ;a++){
-            if(a==0){
-                link.customerID = currentLevel.pop();
-            }            
-            link.forwardUserID = nextLevel.pop();
-            link.value = fixed_weight_checked ? fixed_weight : Math.ceil(Math.random() * 20);
-            link.datetime = new Date();
-            link.pageURL = "";
-            link.pageName = "";
-            nodeLink.links.push(link); 
-            if(a+1>=random){
-                a=0;
+
+    for (var i = 0; i < newLevelArray.length - 1; i++) {
+        var averageNum = Math.ceil(newLevelArray[i + 1].length / newLevelArray[i].length);
+        for (var j = 0; j < newLevelArray[i].length; j++) {
+            for (var num = j * averageNum; num < (j + 1) * averageNum; num++) {
+                if (typeof newLevelArray[i + 1][num] != "undefined") {
+                    link.customerID = newLevelArray[i][j].customerID;
+                    link.forwardUserID = newLevelArray[i + 1][num].customerID;
+                    link.value = fixed_weight_checked ? fixed_weight : Math.ceil(Math.random() * 20);
+                    link.datetime = new Date();
+                    link.pageURL = "";
+                    link.pageName = "";
+                    nodeLink.links.push(Object.assign({}, link));
+                   // console.log(link.customerID + "-" + link.forwardUserID);
+                }else{
+                    break;
+                }
             }
-        }          
-    }        
+        }
+    }
     $("#result").val(JSON.stringify(nodeLink));
     console.log(nodeLink);
 });
 
 $("#copy").click(function () {
-    var result =  document.getElementById("result");
+    var result = document.getElementById("result");
     result.select();
     document.execCommand("Copy");
 });
@@ -193,9 +187,9 @@ NickNameUtil.getRandomChineseName = function () {
 //生成随机用户名，数字和字母组成,
 NickNameUtil.getStringRandom = function (length) {
     var val = "";
-    var lowerCaseChar = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"];
-    var upperCaseChar = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"];
-    for (key in upperCaseChar){
+    var lowerCaseChar = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+    var upperCaseChar = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+    for (key in upperCaseChar) {
         upperCaseChar[key] = upperCaseChar[key].toUpperCase();
     }
     //参数length，表示生成几位随机数
@@ -204,7 +198,7 @@ NickNameUtil.getStringRandom = function (length) {
         //输出字母还是数字
         if ("char" == charOrNum) {
             //输出是大写字母还是小写字母
-            var temp =  lowerCaseChar.concat(upperCaseChar);
+            var temp = lowerCaseChar.concat(upperCaseChar);
             var index = Math.floor(Math.random() * 52);
             val += temp[index];
         } else if ("num" == charOrNum) {

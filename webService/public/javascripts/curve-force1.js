@@ -70,7 +70,7 @@ tc.renderChart = function (data) {
                 tc.svg.lineElements.attr("transform", d3.event.transform);
                 tc.svg.nameElements.attr("transform", d3.event.transform);
             }))
-            .on('dblclick.zoom', null);
+        .on('dblclick.zoom', null);
 
 
     tc.svg.lineElements = tc.svg.svgElement.append("g")
@@ -99,7 +99,7 @@ tc.renderChart = function (data) {
         .attr("fill", d => "url(#" + d.data.customerID + "-img)")
         .attr("id", d => d.data.customerID + "-circle")
         .attr("stroke", "yellow")
-        .attr("stroke-width", tc.svg.circleBorderWidth)           
+        .attr("stroke-width", tc.svg.circleBorderWidth)
         .call(tc.svg.drag(tc.svg.simulation));
 
     tc.svg.imgElements = tc.svg.svgElement.append("defs")
@@ -123,9 +123,9 @@ tc.renderChart = function (data) {
         .join("text")
         .attr("font-size", tc.svg.fontSize)
         .attr("stroke", "black")
-        .attr("width", d => d.data.nickname.length * tc.svg.fontSize)
+        .attr("width", d => d.data.nickName.length * tc.svg.fontSize)
         .attr("height", 20)
-        .text(d => d.data.nickname + "," + d.data.gender)
+        .text(d => d.data.nickName + "," + d.data.gender)
         .attr("id", d => d.data.customerID + "-nickname")
         .attr("class", "nickname");
 
@@ -135,7 +135,7 @@ tc.renderChart = function (data) {
             .attr("fill", "none");
 
         tc.svg.nameElements
-            .attr("x", d => d.x - d.data.nickname.length * tc.svg.fontSize / 2)
+            .attr("x", d => d.x - d.data.nickName.length * tc.svg.fontSize / 2)
             .attr("y", d => d.y + tc.svg.nodeRadius + tc.svg.fontSize * 1.5);
 
         tc.svg.nodeElements
@@ -149,12 +149,17 @@ tc.renderChart = function (data) {
 
 
 //Fetch Chain Data from JSON File and callback function to influence the data to d3 chart
-d3.json('data/curve-tree.json').then(function (data, err) {
+d3.json('data/curve-tree-2.json').then(function (data, err) {
     console.log(data);
     console.log(err);
-    tc.svg.treeData = data.treeData;
-    tc.svg.linkData = data.linkData;
-   
+    
+    
+    tc.svg.treeData = data
+    tc.svg.linkData = {
+        nodes:tc.nodesFromTree(data),
+        links:tc.treeToLink(data)
+    };
+
     var resetButtonDiv = document.createElement("div");
     resetButtonDiv.setAttribute("id", "reset-div");
     var resetButton = document.createElement("button");
@@ -177,16 +182,56 @@ d3.json('data/curve-tree.json').then(function (data, err) {
         tc.showNickName();
     });
     tc.showNickName();
+
+
 });
 
-tc.showNickName = function(){
-    d3.selectAll("circle").on("click",function(){
-        var textId = this.id.replace('-circle','-nickname');
+tc.showNickName = function () {
+    d3.selectAll("circle").on("click", function () {
+        var textId = this.id.replace('-circle', '-nickname');
         var textDisplay = document.getElementById(textId).style.display;
-        if(textDisplay == 'none'||textDisplay ==''){
-            document.getElementById(textId).style.display ='block';
-        }else{
-            document.getElementById(textId).style.display ='none';
+        if (textDisplay == 'none' || textDisplay == '') {
+            document.getElementById(textId).style.display = 'block';
+        } else {
+            document.getElementById(textId).style.display = 'none';
         }
     });
+}
+
+tc.nodesFromTree = function (tree) {
+    var nodes = [];
+    var node = Object.assign({}, tree);
+    var children = Object.assign([], node.children);
+    delete node.children;
+    // console.log(node);
+    nodes.push(node);
+
+    var chidrenNode = [];
+    if (children.length > 0) {
+        for (key in children) {
+            chidrenNode = chidrenNode.concat(tc.nodesFromTree(children[key]));
+            // console.log(chidrenNode);
+        }
+    }
+    return nodes.concat(chidrenNode);
+}
+
+tc.treeToLink = function (tree) {
+    var node = Object.assign({}, tree);
+    var children = Object.assign([], node.children);
+    var links = [];
+    var link = {};
+    if (children.length > 0) {
+        for (key in children) {
+            link.customerID = node.customerID;
+            link.forwardUserID = children[key].customerID;
+            link.value = node.value;
+            link.pageURL = "";
+            link.pageName = "";
+            links.push(link);
+            links = links.concat(tc.treeToLink(children[key]));
+        }
+    }
+    // console.log(links);
+    return links;
 }

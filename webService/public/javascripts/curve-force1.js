@@ -125,7 +125,9 @@ tc.renderChart = function (data) {
         .attr("stroke", "black")
         .attr("width", d => d.data.nickName.length * tc.svg.fontSize)
         .attr("height", 20)
-        .text(d => d.data.nickName + "," + d.data.gender)
+        .text("")
+        .attr('encryptedNickname',d => d.data.nickName )
+        .attr('gender',d=>d.data.gender)
         .attr("id", d => d.data.customerID + "-nickname")
         .attr("class", "nickname");
 
@@ -188,13 +190,19 @@ d3.json('data/curve-tree-2.json').then(function (data, err) {
 
 tc.showNickName = function () {
     d3.selectAll("circle").on("click", function () {
+
         var textId = this.id.replace('-circle', '-nickname');
-        var textDisplay = document.getElementById(textId).style.display;
-        if (textDisplay == 'none' || textDisplay == '') {
-            document.getElementById(textId).style.display = 'block';
-        } else {
-            document.getElementById(textId).style.display = 'none';
-        }
+        var text = document.getElementById(textId);
+        var encryptedNickname = text.getAttribute("encryptedNickname").trim();
+        d3.text("http://localhost:8080/rsa-encryption/unencrypt/nickname/"+encryptedNickname).then(function(data){
+            text.innerHTML = data + "," + text.getAttribute("gender");
+            var textDisplay = document.getElementById(textId).style.display;
+            if (textDisplay == 'none' || textDisplay == '') {
+                text.style.display = 'block';
+            } else {
+                text.style.display = 'none';
+            }
+        });        
     });
 }
 

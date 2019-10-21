@@ -151,12 +151,12 @@ tc.renderChart = function (data) {
 
 
 //Fetch Chain Data from JSON File and callback function to influence the data to d3 chart
-d3.json('data/curve-tree-2.json').then(function (data, err) {
+d3.json('data/curve-force-1000-node-tree.json').then(function (data, err) {
     console.log(data);
     console.log(err);
     
     
-    tc.svg.treeData = data
+    tc.svg.treeData = data;
     tc.svg.linkData = {
         nodes:tc.nodesFromTree(data),
         links:tc.treeToLink(data)

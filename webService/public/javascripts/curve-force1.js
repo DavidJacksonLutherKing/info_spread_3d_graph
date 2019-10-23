@@ -7,8 +7,8 @@ tc.temp = tc.temp || {
     links: []
 };
 
-tc.history =tc.history || {
-    rootData : new Object()    
+tc.history = tc.history || {
+    rootData: new Object()
 };
 tc.svg = tc.svg || {
     height: window.innerHeight,
@@ -99,7 +99,7 @@ tc.updateSvg = function (data) {
         .attr("is_shown", "true")
         .attr("children_shown", "true")
         .attr("r", tc.svg.nodeRadius)
-        .attr("fill", "black") //d => "url(#" + d.data.customerID + "-img)")
+        .attr("fill", d => "url(#" + d.data.customerID + "-img)")
         .attr("id", d => d.data.customerID + "-circle")
         .attr("stroke", "yellow")
         .attr("stroke-width", tc.svg.circleBorderWidth)
@@ -128,12 +128,21 @@ tc.updateSvg = function (data) {
         .attr("stroke", "black")
         .attr("width", d => d.data.nickName.length * tc.svg.fontSize)
         .attr("height", 20)
-        .text("")
+        .text(d => d.data.nickName)
         .attr('encryptedNickname', d => d.data.nickName)
         .attr('gender', d => d.data.gender)
         .attr("id", d => d.data.customerID + "-nickname")
         .attr("class", "nickname");
 
+    tc.svg.childCountElements = tc.svg.svgElement.append("g")
+        .attr("class", "childCount")
+        .selectAll("text")
+        .data(tc.svg.nodes)
+        .join("text")
+        .attr("font-size", tc.svg.fontSize)
+        .attr("stroke", "black")
+        .text(d => d.data.childCount)
+        .attr("id", d => d.data.customerID + "-childCount")
     tc.svg.simulation.on("tick", () => {
         tc.svg.lineElements
             // .attr("d", d => "M" + d.source.x + "," + d.source.y + " A" + tc.svg.pathRadius + "," + tc.svg.pathRadius + ",0,0,1," + d.target.x + "," + d.target.y)
@@ -147,6 +156,10 @@ tc.updateSvg = function (data) {
             .attr("x", d => d.x - d.data.nickName.length * tc.svg.fontSize / 2)
             .attr("y", d => d.y + tc.svg.nodeRadius + tc.svg.fontSize * 1.5);
 
+        tc.svg.childCountElements
+            .attr("x", d => d.x + tc.svg.nodeRadius)
+            .attr("y", d => d.y - tc.svg.nodeRadius/2);
+
         tc.svg.nodeElements
             .attr("cx", d => d.x)
             .attr("cy", d => d.y);
@@ -158,19 +171,14 @@ tc.updateSvg = function (data) {
 
 
 //Fetch Chain Data from JSON File and callback function to influence the data to d3 chart
-d3.json('data/curve-force-1000-node-tree.json').then(function (data, err) {
+d3.json('data/curve-tree-3.json').then(function (data, err) {
     console.log(data);
     console.log(err);
-
-
     tc.svg.treeData = data;
     tc.svg.linkData = {
         nodes: tc.nodesFromTree(data),
         links: tc.treeToLink(data)
     };
-
-
-
     tc.renderChart(tc.svg.treeData);
 
 
@@ -178,7 +186,6 @@ d3.json('data/curve-force-1000-node-tree.json').then(function (data, err) {
 
 tc.renderChart = function (data) {
     document.getElementById("transmission-chain-chart").innerHTML = "";
-
     var resetButtonDiv = document.createElement("div");
     resetButtonDiv.setAttribute("id", "reset-div");
     var resetButton = document.createElement("button");
@@ -200,13 +207,17 @@ tc.renderChart = function (data) {
         var chartSVG = tc.updateSvg(tc.svg.treeData);
         document.getElementById("chain-svg-div").append(chartSVG.svgElement.node());
         tc.showNickName();
+        d3.selectAll("circle").on("click", function (d) {
+            console.log(d);
+            tc.renderChart(d.data);
+        });
     });
     tc.showNickName();
-
     d3.selectAll("circle").on("click", function (d) {
-        console.log(d);        
+        console.log(d);
         tc.renderChart(d.data);
     });
+    
 }
 
 
@@ -231,7 +242,7 @@ tc.showNickName = function () {
 }
 
 tc.getRootTreeData = function (d) {
-    var node = Object.assign({},d)
+    var node = Object.assign({}, d)
     if (node.parent != null) {
         result = this.getRootTreeData(node.parent);
     } else {

@@ -47,6 +47,6 @@ text{
     margin: 10px;
 }
 
-text{
+text.nickname{
     display: none;
 }

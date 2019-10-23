@@ -7,6 +7,9 @@ tc.temp = tc.temp || {
     links: []
 };
 
+tc.history =tc.history || {
+    rootData : new Object()    
+};
 tc.svg = tc.svg || {
     height: window.innerHeight,
     width: window.innerWidth,
@@ -49,8 +52,8 @@ tc.svg = tc.svg || {
     }
 }
 
-//Define renderChart Function
-tc.renderChart = function (data) {
+//Define updateSvg Function
+tc.updateSvg = function (data) {
     //Define SVG Size
     tc.svg.root = d3.hierarchy(data);
     tc.svg.links = tc.svg.root.links();
@@ -75,15 +78,15 @@ tc.renderChart = function (data) {
 
     tc.svg.lineElements = tc.svg.svgElement.append("g")
         .attr("class", "line")
-        .selectAll("path")
+        .selectAll("line")
         .data(tc.svg.links)
-        .join("path")
+        .join("line")
         .attr("id", d => d.source.data.customerID + "-" + d.target.data.customerID + "-line")
         .attr("name", d => d.target.data.customerID + "-line")
         .attr("class", "link-line")
         .attr("end", d => d.target.data.customerID)
         .attr("is_shown", "true")
-        .attr("stroke", "#999")
+        .attr("stroke", "#333")
         .attr("stroke-width", tc.svg.lineStroke)
         .attr("stroke-opacity", 0.6);
 
@@ -96,7 +99,7 @@ tc.renderChart = function (data) {
         .attr("is_shown", "true")
         .attr("children_shown", "true")
         .attr("r", tc.svg.nodeRadius)
-        .attr("fill", d => "url(#" + d.data.customerID + "-img)")
+        .attr("fill", "black") //d => "url(#" + d.data.customerID + "-img)")
         .attr("id", d => d.data.customerID + "-circle")
         .attr("stroke", "yellow")
         .attr("stroke-width", tc.svg.circleBorderWidth)
@@ -126,15 +129,19 @@ tc.renderChart = function (data) {
         .attr("width", d => d.data.nickName.length * tc.svg.fontSize)
         .attr("height", 20)
         .text("")
-        .attr('encryptedNickname',d => d.data.nickName )
-        .attr('gender',d=>d.data.gender)
+        .attr('encryptedNickname', d => d.data.nickName)
+        .attr('gender', d => d.data.gender)
         .attr("id", d => d.data.customerID + "-nickname")
         .attr("class", "nickname");
 
     tc.svg.simulation.on("tick", () => {
         tc.svg.lineElements
-            .attr("d", d => "M" + d.source.x + "," + d.source.y + " A" + tc.svg.pathRadius + "," + tc.svg.pathRadius + ",0,0,1," + d.target.x + "," + d.target.y)
-            .attr("fill", "none");
+            // .attr("d", d => "M" + d.source.x + "," + d.source.y + " A" + tc.svg.pathRadius + "," + tc.svg.pathRadius + ",0,0,1," + d.target.x + "," + d.target.y)
+            .attr("x1", d => d.source.x)
+            .attr("y1", d => d.source.y)
+            .attr("x2", d => d.target.x)
+            .attr("y2", d => d.target.y)
+            .attr("stroke", "black");
 
         tc.svg.nameElements
             .attr("x", d => d.x - d.data.nickName.length * tc.svg.fontSize / 2)
@@ -154,13 +161,23 @@ tc.renderChart = function (data) {
 d3.json('data/curve-force-1000-node-tree.json').then(function (data, err) {
     console.log(data);
     console.log(err);
-    
-    
+
+
     tc.svg.treeData = data;
     tc.svg.linkData = {
-        nodes:tc.nodesFromTree(data),
-        links:tc.treeToLink(data)
+        nodes: tc.nodesFromTree(data),
+        links: tc.treeToLink(data)
     };
+
+
+
+    tc.renderChart(tc.svg.treeData);
+
+
+});
+
+tc.renderChart = function (data) {
+    document.getElementById("transmission-chain-chart").innerHTML = "";
 
     var resetButtonDiv = document.createElement("div");
     resetButtonDiv.setAttribute("id", "reset-div");
@@ -169,41 +186,60 @@ d3.json('data/curve-force-1000-node-tree.json').then(function (data, err) {
     resetButton.innerText = "重置";
     resetButtonDiv.appendChild(resetButton);
 
-    var chartSVG = tc.renderChart(tc.svg.treeData);
+    var chartSVG = tc.updateSvg(data);
     document.getElementById("transmission-chain-chart").append(resetButtonDiv);
     resetButtonDiv.style.width = window.innerWidth + "px";
 
     var svgDiv = document.createElement("div")
     svgDiv.setAttribute("id", "chain-svg-div");
     document.getElementById("transmission-chain-chart").append(svgDiv);
+    document.getElementById("chain-svg-div").innerHTML = "";
     document.getElementById("chain-svg-div").append(chartSVG.svgElement.node());
     resetButton.addEventListener("click", function () {
-        document.getElementById("chain-svg-div").innerHTML="";
-        var chartSVG = tc.renderChart(tc.svg.treeData);
+        document.getElementById("chain-svg-div").innerHTML = "";
+        var chartSVG = tc.updateSvg(tc.svg.treeData);
         document.getElementById("chain-svg-div").append(chartSVG.svgElement.node());
         tc.showNickName();
     });
     tc.showNickName();
 
+    d3.selectAll("circle").on("click", function (d) {
+        console.log(d);        
+        tc.renderChart(d.data);
+    });
+}
 
-});
+
+
 
 tc.showNickName = function () {
-    d3.selectAll("circle").on("click", function () {
-
-        var textId = this.id.replace('-circle', '-nickname');
-        var text = document.getElementById(textId);
-        var encryptedNickname = text.getAttribute("encryptedNickname").trim();
-        d3.text("http://localhost:8080/rsa-encryption/unencrypt/nickname/"+encryptedNickname).then(function(data){
-            text.innerHTML = data + "," + text.getAttribute("gender");
-            var textDisplay = document.getElementById(textId).style.display;
-            if (textDisplay == 'none' || textDisplay == '') {
-                text.style.display = 'block';
-            } else {
-                text.style.display = 'none';
-            }
-        });        
+    d3.selectAll("circle").on("click", function (d) {
+        // d.children = null;
+        // var textId = this.id.replace('-circle', '-nickname');
+        // var text = document.getElementById(textId);
+        // var encryptedNickname = text.getAttribute("encryptedNickname").trim();
+        // d3.text("http://localhost:8080/rsa-encryption/unencrypt/nickname/" + encryptedNickname).then(function (data) {
+        //     text.innerHTML = data + "," + text.getAttribute("gender");
+        //     var textDisplay = document.getElementById(textId).style.display;
+        //     if (textDisplay == 'none' || textDisplay == '') {
+        //         text.style.display = 'block';
+        //     } else {
+        //         text.style.display = 'none';
+        //     }
+        // });
     });
+}
+
+tc.getRootTreeData = function (d) {
+    var node = Object.assign({},d)
+    if (node.parent != null) {
+        result = this.getRootTreeData(node.parent);
+    } else {
+        console.log(node.parent);
+        console.log(node.data);
+        result = node.data;
+    }
+    return result;
 }
 
 tc.nodesFromTree = function (tree) {
@@ -217,7 +253,7 @@ tc.nodesFromTree = function (tree) {
     var chidrenNode = [];
     if (children.length > 0) {
         for (key in children) {
-            chidrenNode = chidrenNode.concat(tc.nodesFromTree(children[key]));
+            chidrenNode = chidrenNode.concat(this.nodesFromTree(children[key]));
             // console.log(chidrenNode);
         }
     }
@@ -237,7 +273,7 @@ tc.treeToLink = function (tree) {
             link.pageURL = "";
             link.pageName = "";
             links.push(link);
-            links = links.concat(tc.treeToLink(children[key]));
+            links = links.concat(this.treeToLink(children[key]));
         }
     }
     // console.log(links);
